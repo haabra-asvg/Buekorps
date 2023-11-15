@@ -3,6 +3,7 @@ const colors = require('colors');
 const db = require('better-sqlite3')('database.db');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const app = express();
 const showLog = true;
 
@@ -34,7 +35,9 @@ app.get('/admin/users', (req, res) => {
 app.post('/post/registrer', (req, res) => {
   const {name, email, password} = req.body;
   const insertStatement = db.prepare("INSERT INTO users (name, email, rolle, password) VALUES (?, ?, ?, ?)");
-  const insert = insertStatement.run(name, email, "medlem", password);
+  const hashedPassword = bcrypt.hashSync(password, 10);
+  console.log(hashedPassword);
+  const insert = insertStatement.run(name, email, "medlem", hashedPassword);
   if(insert) {
     res.redirect("/");
   }
