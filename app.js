@@ -36,7 +36,6 @@ app.post('/post/registrer', (req, res) => {
   const {name, email, password} = req.body;
   const insertStatement = db.prepare("INSERT INTO users (name, email, rolle, password) VALUES (?, ?, ?, ?)");
   const hashedPassword = bcrypt.hashSync(password, 10);
-  console.log(hashedPassword);
   const insert = insertStatement.run(name, email, "medlem", hashedPassword);
   if(insert) {
     res.redirect("/");
@@ -45,19 +44,16 @@ app.post('/post/registrer', (req, res) => {
 
 app.post('/post/login', (req, res) => {
   const { email, password } = req.body;
-  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ? AND password = ?");
-  const user = selectStatement.get(email, password);
-  if(user) {
-    res.cookie("user", user.email, { maxAge: 30 * 24 * 60 * 60 * 1000, path: '/' });
-    res.redirect("/");
-  } else {
-    res.send("Invalid email or password");
-  }
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(email);
+  if(!user) return res.send("Invalid email or password!");
+  verifyUser(user, password, res);
 });
 
 app.post('/post/delete', (req, res) => {
   const insert = db.exec("DELETE FROM users");
   if(req.cookies.user) {
+    if(showLog) console.log("[" + colors.red.bold("LOGIN") + "] Database wiped!");
     res.clearCookie("user");
   }
   if(insert) {
@@ -67,8 +63,19 @@ app.post('/post/delete', (req, res) => {
 
 app.post('/post/checkCookie', (req, res) => {
   const user = req.cookies.user;
-  console.log(user);
+  if(showLog) console.log("[" + colors.green.bold("CHECK COOKIE") + "] " + user);
 })
+
+function verifyUser(user, password, res) {
+  const match = bcrypt.compareSync(password, user.password);
+  if(!match) {
+    return res.send("Invalid email or password!");
+  } else {
+    res.cookie("user", user.email, { maxAge: 30 * 24 * 60 * 60 * 1000, path: '/' });
+    if(showLog) console.log("[" + colors.yellow.bold("LOGIN") + "] User logged in!");
+    res.redirect("/");
+  }
+}
 
 app.listen('3000', () => {
   if(showLog) console.log("[" + colors.brightRed.bold("PORT") + "] Listening on PORT 3000");
