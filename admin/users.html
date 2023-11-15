@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  fetch("/json/users")
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(user => {
+        const tr = document.createElement("tr");
+        const id = document.createElement("td");
+        const name = document.createElement("td");
+        const email = document.createElement("td");
+        const rolle = document.createElement("td");
+        id.setAttribute("class", "id");
+        id.innerText = user.id;
+        name.innerText = user.name;
+        email.innerText = user.email;
+        rolle.innerText = user.rolle;
+        tr.appendChild(id);
+        tr.appendChild(name);
+        tr.appendChild(email);
+        tr.appendChild(rolle);
+        document.querySelector("tbody").appendChild(tr);
+      })
+    })
+</script>
+<body>
+  <table id="table">
+    <thead id="thead">
+      <tr>
+        <th>#</th>
+        <th>Navn</th>
+        <th>E-post</th>
+        <th>Rolle</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+</body>
+</html>

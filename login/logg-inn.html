@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+</head>
+
+<style>
+  #eye {
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+</style>
+
+<script>
+  var passwordRevealed = false;
+  function revealPassword(element) {
+    const e = document.getElementById(element);
+    if(passwordRevealed == false) {
+      e.setAttribute("type", "text");
+      passwordRevealed = true;
+    } else {
+      e.setAttribute("type", "password");
+      passwordRevealed = false;
+    }
+  }
+</script>
+
+<body>
+  <div class="container">
+    <form action="/post/login" method="post">
+      <label for=""></label>
+      <input type="text" name="email" id="email">
+      <label for=""></label>
+      <div class="password-container">
+        <input type="password" placeholder="Password..." name="password" class="password" id="passwordRevealElement">
+        <button type="button" id="eye" onclick="revealPassword('passwordRevealElement')"><i class="fa-solid fa-eye" id="eye"></i></button>
+      </div>
+      <input type="submit" value="Submit">
+      <p>Er du ikke registrert? Lag en bruker <a href="/registrer">her!</a></p>
+    </form>
+  </div>
+</body>
+
+</html>
