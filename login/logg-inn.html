@@ -33,17 +33,17 @@
 </script>
 
 <body>
-  <div class="container">
-    <form action="/post/login" method="post">
-      <label for=""></label>
-      <input type="text" name="email" id="email">
-      <label for=""></label>
-      <div class="password-container">
-        <input type="password" placeholder="Password..." name="password" class="password" id="passwordRevealElement">
-        <button type="button" id="eye" onclick="revealPassword('passwordRevealElement')"><i class="fa-solid fa-eye" id="eye"></i></button>
+  <div class="container mx-auto w-25 mt-2">
+    <h3><center>Logg inn</center></h3>
+    <form action="/post/login" method="POST">
+      <div class="login-container mt-5 border rounded p-3 bg-body-tertiary">
+        <input type="email" name="email" class="form-control" id="email" placeholder="Email"> <br>
+        <input type="password" name="password" class="form-control" id="password" placeholder="Passord"> <br>
+        <div class="btn-container d-flex justify-content-end">
+          <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+        </div>
+        <p class="mt-3 text-center">Ingen bruker? Registrer deg <a href="/registrer">her!</a></p>
       </div>
-      <input type="submit" value="Submit">
-      <p>Er du ikke registrert? Lag en bruker <a href="/registrer">her!</a></p>
     </form>
   </div>
 </body>
