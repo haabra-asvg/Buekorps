@@ -22,7 +22,6 @@
             return encodedValue ? decodeURIComponent(encodedValue) : null;
           }
           const user = data.find((user) => user.email == getCookieValue("user"));
-          console.log(user.rolle);
           if (user.rolle == "medlem") {
             window.location.href = "/";
           }
@@ -61,12 +60,8 @@
     .then((data) => {
       const user = data.find((user) => user.id == userId);
       document.getElementById("id").value = user.id;
-      console.log(user.id);
       document.getElementById("name").value = user.name;
-      console.log(user.name);
       document.getElementById("email").value = user.email;
-      console.log(user.email);
       document.getElementById("rolle").value = user.rolle;
-      console.log(user.rolle);
     });
 </script>

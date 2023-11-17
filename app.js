@@ -64,23 +64,16 @@ app.post("/post/redigerBruker", (req, res) => {
   const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
   const user = selectStatement.get(id);
 
-  console.log("ID: " + user.id + " NAME " + user.name + " EMAIL " + user.email + " ROLLE " + user.rolle)
-  console.log("ID: " + id + " NAME " + name + " EMAIL " + email + " ROLLE " + rolle)
-
   if (name != user.name) {
-    console.log("Name change detected!");
     const updateStatement = db.prepare("UPDATE users SET name = ? WHERE id = ?");
     updateStatement.run(name, id);
   }
   if (email != user.email) {
-    console.log("Email change detected!");
     const updateStatement = db.prepare("UPDATE users SET email = ? WHERE id = ?");
     updateStatement.run(email, id);
   }
   if (rolle != user.rolle) {
-    console.log("Rolle change detected!");
     if(rolle != "velg") {
-      console.log("New rolle is NOT velg!");
       const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
       updateStatement.run(rolle, id);
     }
