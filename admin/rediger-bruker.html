@@ -30,13 +30,11 @@
   <form action="/post/redigerBruker" method="POST">
     <div class="login-container mt-5 border rounded p-3 bg-body-tertiary w-50 mx-auto">
       <h3 class="mb-3"><center>Rediger bruker</center></h3>
-      <fieldset disabled="disabled">
-        <input type="text" id="id" class="form-control mb-4">
-      </fieldset>
-      <input type="text" name="navn" class="form-control" id="navn" placeholder="Fullt navn"> <br>
+      <input type="number" name="userId" class="form-control" id="userId" placeholder="ID" disabled> <br>
+      <input type="text" name="name" class="form-control" id="name" placeholder="Fullt navn"> <br>
       <input type="email" name="email" class="form-control" id="email" placeholder="Email"> <br>
       <select class="form-select form-select-sm" name="rolle" id="rolle">
-        <option selected>Velg en rolle...</option>
+        <option selected value="velg">Velg en rolle...</option>
         <option value="leder">Leder</option>
         <option value="administrator">Administrator</option>
         <option value="medlem">Medlem</option>
@@ -55,8 +53,9 @@
   .then(res => res.json())
   .then(data => {
     const user = data.find(user => user.id == userId);
-    document.getElementById("id").value = user.id;
-    document.getElementById("navn").value = user.name;
+    document.getElementById("userId").value = user.id;
+    console.log(user.id);
+    document.getElementById("name").value = user.name;
     console.log(user.name)
     document.getElementById("email").value = user.email;
     console.log(user.email)
