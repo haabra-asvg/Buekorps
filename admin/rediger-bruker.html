@@ -8,7 +8,6 @@
     <title>Document</title>
   </head>
   <script>
-    function fetchUser() {
       fetch("/json/users")
         .then((res) => res.json())
         .then((data) => {
@@ -26,8 +25,6 @@
             window.location.href = "/";
           }
         });
-      }
-      fetchUser();
   </script>
   <body>
     <form action="/post/redigerBruker" method="POST">

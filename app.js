@@ -65,21 +65,39 @@ app.post("/post/redigerBruker", (req, res) => {
   const user = selectStatement.get(id);
 
   if (name != user.name) {
-    const updateStatement = db.prepare("UPDATE users SET name = ? WHERE id = ?");
+    const updateStatement = db.prepare(
+      "UPDATE users SET name = ? WHERE id = ?"
+    );
     updateStatement.run(name, id);
   }
   if (email != user.email) {
-    const updateStatement = db.prepare("UPDATE users SET email = ? WHERE id = ?");
+    const updateStatement = db.prepare(
+      "UPDATE users SET email = ? WHERE id = ?"
+    );
     updateStatement.run(email, id);
   }
   if (rolle != user.rolle) {
-    if(rolle != "velg") {
-      const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+    if (rolle != "velg") {
+      const updateStatement = db.prepare(
+        "UPDATE users SET rolle = ? WHERE id = ?"
+      );
       updateStatement.run(rolle, id);
     }
   }
 
   res.redirect("/");
+});
+
+app.post("/post/slettBruker/:id", (req, res) => {
+  const id = req.params.id;
+  const userEmail = req.cookies.user;
+  const user = db.prepare("SELECT * FROM users WHERE email = ?").get(userEmail);
+  if(user.id == id) {
+    return res.send("Du kan ikke slette deg selv!");
+  }
+  const deleteStatement = db.prepare("DELETE FROM users WHERE id = ?");
+  deleteStatement.run(id);
+  res.redirect("/admin/brukere");
 });
 
 app.post("/post/delete", (req, res) => {
