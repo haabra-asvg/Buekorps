@@ -22,7 +22,7 @@ app.get('/logg-inn', (req, res) => {
   res.sendFile(__dirname + "/login/logg-inn.html");
 });
 
-app.get('/admin/rediger-bruker', (req, res) => {
+app.get('/admin/rediger-bruker/:id', (req, res) => {
   res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
@@ -33,7 +33,7 @@ app.get('/json/users', (req, res) => {
 });
 
 app.get('/admin/brukere', (req, res) => {
-  res.sendFile(__dirname + "/admin/users.html");
+  res.sendFile(__dirname + "/admin/brukere.html");
 });
 
 app.post('/post/registrer', (req, res) => {

@@ -1,12 +1,24 @@
-<script>
-  // Get the ID from the URL query parameter
-  const urlParams = new URLSearchParams(window.location.search);
-  const userId = urlParams.get('id');
-  document.getElementById("name").innerText = userId;
-</script>
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 <body>
-  <p id="name"></p>
-  <p id="email"></p>
+  <form action="/post/editUser" method="POST">
+    
+  </form>
 </body>
 </html>
+
+<script>
+  const userId = window.location.pathname.split('/').pop();
+  fetch("/json/users")
+  .then(res => res.json())
+  .then(data => {
+    const user = data.find(user => user.id == userId);
+    document.getElementById("name").innerText = user.name;
+    document.getElementById("email").innerText = user.email;
+  });
+</script>
