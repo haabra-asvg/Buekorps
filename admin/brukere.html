@@ -100,7 +100,7 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
-        editUserA.href = `/admin/rediger-bruker/${user.id}`;
+        editUserA.href = `/admin/rediger-bruker?id=${user.id}`;
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
@@ -110,7 +110,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
-        actions.appendChild(editUser);
+        editUserA.appendChild(editUser);
+        actions.appendChild(editUserA);
         actions.appendChild(deleteUser);
         tr.appendChild(actions);
         document.getElementById("medlemBody").appendChild(tr);

@@ -22,9 +22,8 @@ app.get('/logg-inn', (req, res) => {
   res.sendFile(__dirname + "/login/logg-inn.html");
 });
 
-app.get('/admin/rediger-bruker/:id', (req, res) => {
-  const id = req.params.id;
-  res.sendFile(__dirname + "/admin/rediger-bruker.html", {id: id});
+app.get('/admin/rediger-bruker', (req, res) => {
+  res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
 app.get('/json/users', (req, res) => {
@@ -33,7 +32,7 @@ app.get('/json/users', (req, res) => {
   res.send(users);
 });
 
-app.get('/admin/users', (req, res) => {
+app.get('/admin/brukere', (req, res) => {
   res.sendFile(__dirname + "/admin/users.html");
 });
 
