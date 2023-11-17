@@ -1,65 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <title>Document</title>
-</head>
-<script>
-  // fetch("/json/users")
-  // .then(res => res.json())
-  // .then(data => {
-  //   function getCookieValue(cookieName) {
-  //     const cookieKeyValuePairs = document.cookie.split('; ')
-  //       .map(cookie => cookie.split('='))
-  //       .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <title>Document</title>
+  </head>
+  <script>
+    function fetchUser() {
+      fetch("/json/users")
+        .then((res) => res.json())
+        .then((data) => {
+          function getCookieValue(cookieName) {
+            const cookieKeyValuePairs = document.cookie
+              .split("; ")
+              .map((cookie) => cookie.split("="))
+              .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
-  //     const encodedValue = cookieKeyValuePairs[cookieName];
-  //     return encodedValue ? decodeURIComponent(encodedValue) : null;
-  //   }
-  //   const user = data.find(user => user.email == getCookieValue("user"));
-  //   console.log(user.rolle);
-  //   if(user.rolle == "medlem") {
-  //     window.location.href = "/";
-  //   }
-  // });
-</script>
-<body>
-  <form action="/post/redigerBruker" method="POST">
-    <div class="login-container mt-5 border rounded p-3 bg-body-tertiary w-50 mx-auto">
-      <h3 class="mb-3"><center>Rediger bruker</center></h3>
-      <input type="number" name="id" class="form-control" id="id" placeholder="ID" readonly> <br>
-      <input type="text" name="name" class="form-control" id="name" placeholder="Fullt navn"> <br>
-      <input type="email" name="email" class="form-control" id="email" placeholder="Email"> <br>
-      <select class="form-select form-select-sm" name="rolle" id="rolle">
-        <option selected value="velg">Velg en rolle...</option>
-        <option value="leder">Leder</option>
-        <option value="administrator">Administrator</option>
-        <option value="medlem">Medlem</option>
-      </select>
-      <div class="btn-container d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
+            const encodedValue = cookieKeyValuePairs[cookieName];
+            return encodedValue ? decodeURIComponent(encodedValue) : null;
+          }
+          const user = data.find((user) => user.email == getCookieValue("user"));
+          console.log(user.rolle);
+          if (user.rolle == "medlem") {
+            window.location.href = "/";
+          }
+        });
+      }
+      fetchUser();
+  </script>
+  <body>
+    <form action="/post/redigerBruker" method="POST">
+      <div
+        class="login-container mt-5 border rounded p-3 bg-body-tertiary w-50 mx-auto"
+      >
+        <h3 class="mb-3"><center>Rediger bruker</center></h3>
+        <input type="number" name="id" class="form-control" id="id" placeholder="ID" readonly /> <br />
+        <input type="text" name="name" class="form-control" id="name" placeholder="Fullt navn" /> <br />
+        <input type="email" name="email" class="form-control" id="email" placeholder="Email" /> <br />
+        <select class="form-select form-select-sm" name="rolle" id="rolle">
+          <option selected value="velg">Velg en rolle...</option>
+          <option value="leder">Leder</option>
+          <option value="administrator">Administrator</option>
+          <option value="medlem">Medlem</option>
+          </script>
+        </select>
+        <div class="btn-container d-flex justify-content-center">
+          <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
+        </div>
       </div>
-    </div>
-  </form>
-</body>
+    </form>
+  </body>
 </html>
 
 <script>
-  const userId = window.location.pathname.split('/').pop();
+  const userId = window.location.pathname.split("/").pop();
   fetch("/json/users")
-  .then(res => res.json())
-  .then(data => {
-    const user = data.find(user => user.id == userId);
-    document.getElementById("id").value = user.id;
-    console.log(user.id);
-    document.getElementById("name").value = user.name;
-    console.log(user.name)
-    document.getElementById("email").value = user.email;
-    console.log(user.email)
-    document.getElementById("rolle").value = user.rolle;
-    console.log(user.rolle)
-  });
+    .then((res) => res.json())
+    .then((data) => {
+      const user = data.find((user) => user.id == userId);
+      document.getElementById("id").value = user.id;
+      console.log(user.id);
+      document.getElementById("name").value = user.name;
+      console.log(user.name);
+      document.getElementById("email").value = user.email;
+      console.log(user.email);
+      document.getElementById("rolle").value = user.rolle;
+      console.log(user.rolle);
+    });
 </script>
