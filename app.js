@@ -54,6 +54,18 @@ app.post('/post/login', (req, res) => {
   verifyUser(user, password, res);
 });
 
+app.post('/post/redigerBruker', (req, res) => {
+  const { id, name, email, rolle } = req.body;
+  fetch('/json/users')
+  .then(res => res.json())
+  .then(data => {
+    const user = data.find(user => user.id == id);
+  });
+  // if(!name == user.name)
+  // if(!email == user.email)
+  // if(!rolle == user.rolle)
+})
+
 app.post('/post/delete', (req, res) => {
   const insert = db.exec("DELETE FROM users");
   if(req.cookies.user) {
