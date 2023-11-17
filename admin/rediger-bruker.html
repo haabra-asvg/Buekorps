@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  // Get the ID from the URL query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+  
+  // Use the ID to retrieve the user data from the server
+  fetch(`/users/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      // Update the HTML with the user data
+      document.getElementById('name').innerText = data.name;
+      document.getElementById('email').innerText = data.email;
+    });
+</script>
+<body>
+  <p id="name"></p>
+  <p id="email"></p>
+</body>
+</html>

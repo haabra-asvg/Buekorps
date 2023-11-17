@@ -22,6 +22,11 @@ app.get('/logg-inn', (req, res) => {
   res.sendFile(__dirname + "/login/logg-inn.html");
 });
 
+app.get('/admin/rediger-bruker/:id', (req, res) => {
+  const id = req.params.id;
+  res.sendFile(__dirname + "/admin/rediger-bruker.html", {id: id});
+});
+
 app.get('/json/users', (req, res) => {
   const selectStatement = db.prepare("SELECT id, name, email, rolle FROM users");
   const users = selectStatement.all();
