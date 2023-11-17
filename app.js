@@ -59,35 +59,30 @@ app.post("/post/login", (req, res) => {
 });
 
 app.post("/post/redigerBruker", (req, res) => {
-  const { userId, name, email, rolle } = req.body;
-  
-  console.log(req.body.userId);
+  const { id, name, email, rolle } = req.body;
 
-  console.log("ID: " + userId + " NAME: " + name + " EMAIL: " + email + " ROLLE: " + rolle);
+  const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
+  const user = selectStatement.get(id);
 
-  // const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
-  // const user = selectStatement.get(id);
+  console.log("ID: " + user.id + " NAME " + user.name + " EMAIL " + user.email + " ROLLE " + user.rolle)
+  console.log("ID: " + id + " NAME " + name + " EMAIL " + email + " ROLLE " + rolle)
 
-  // if (!name == user.name) {
-  //   const updateStatement = db.prepare(
-  //     "UPDATE users SET name = ? WHERE id = ?"
-  //   );
-  //   const update = updateStatement.run(name, id);
-  // }
-  // if (!email == user.email) {
-  //   const updateStatement = db.prepare(
-  //     "UPDATE users SET email = ? WHERE id = ?"
-  //   );
-  //   const update = updateStatement.run(email, id);
-  // }
-  // if (!rolle == user.rolle) {
-  //   if(!rolle == "velg") {
-  //     const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
-  //     const update = updateStatement.run(rolle, id);
-  //   }
-  // }
+  if (!name === user.name) {
+    const updateStatement = db.prepare("UPDATE users SET name = ? WHERE id = ?");
+    const update = updateStatement.run(name, id);
+  }
+  if (!email === user.email) {
+    const updateStatement = db.prepare("UPDATE users SET email = ? WHERE id = ?");
+    const update = updateStatement.run(email, id);
+  }
+  if (!rolle === user.rolle) {
+    if(!rolle == "velg") {
+      const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+      const update = updateStatement.run(rolle, id);
+    }
+  }
 
-  // res.redirect("/");
+  res.redirect("/");
 });
 
 app.post("/post/delete", (req, res) => {
