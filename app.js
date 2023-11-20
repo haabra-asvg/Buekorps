@@ -23,10 +23,10 @@ app.get("/logg-inn", (req, res) => {
 });
 
 app.get('/admin/rediger-bruker/:id', (req, res) => {
-  const getCookie = res.cookies.user;
+  const getCookie = req.cookies.user;
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
   const user = selectStatement.get(getCookie);
-  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  if(user.rolle != "administrator") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
@@ -42,7 +42,7 @@ app.get('/admin/brukere', (req, res) => {
   const getCookie = req.cookies.user;
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
   const user = selectStatement.get(getCookie);
-  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  if(user.rolle != "administrator") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/brukere.html");
 });
 

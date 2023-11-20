@@ -13,6 +13,9 @@
     width: 90% !important;
     margin: 0 auto !important;
   }
+  .form-class {
+    display: inline-block;
+  }
 </style>
 
 <script>
@@ -35,6 +38,7 @@
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
+        const editUserA = document.createElement("a");
         const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
@@ -42,6 +46,7 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
@@ -54,7 +59,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
-        actions.appendChild(editUser);
+        editUserA.appendChild(editUser);
+        actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
         actions.appendChild(deleteForm);
         tr.appendChild(actions);
@@ -69,6 +75,7 @@
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
+        const editUserA = document.createElement("a");
         const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
@@ -76,6 +83,7 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
@@ -88,7 +96,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
-        actions.appendChild(editUser);
+        editUserA.appendChild(editUser);
+        actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
         actions.appendChild(deleteForm);
         tr.appendChild(actions);
@@ -103,6 +112,7 @@
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
+        const editUserA = document.createElement("a");
         const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
@@ -110,6 +120,7 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
@@ -122,7 +133,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
-        actions.appendChild(editUser);
+        editUserA.appendChild(editUser);
+        actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
         actions.appendChild(deleteForm);
         tr.appendChild(actions);
