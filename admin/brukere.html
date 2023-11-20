@@ -1,31 +1,42 @@
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <title>Document</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <title>Document</title>
+  </head>
 
-<style>
-  #table {
-    width: 90% !important;
-    margin: 0 auto !important;
-  }
-</style>
+  <style>
+    #tableLedere, #tableAdministratorer, #tableMedlemmer {
+      width: 90% !important;
+      margin: 0 auto !important;
+    }
 
-<script>
-  fetch("/json/users")
-    .then(res => res.json())
-    .then(data => {
-      const ledere = data.filter(user => user.rolle === "leder");
-      const admins = data.filter(user => user.rolle === "administrator");
-      const medlemmer = data.filter(user => user.rolle === "medlem");
+    .form-class {
+      display: inline-block;
+    }
+  </style>
 
-      ledere.sort((a, b) => a.id - b.id);
-      admins.sort((a, b) => a.id - b.id);
-      medlemmer.sort((a, b) => a.id - b.id);
+  <script>
+    fetch("/json/users")
+      .then((res) => res.json())
+      .then((data) => {
+        function getCookieValue(cookieName) {
+          const cookieKeyValuePairs = document.cookie
+            .split("; ")
+            .map((cookie) => cookie.split("="))
+            .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 
       ledere.forEach(user => {
         const tr = document.createElement("tr");
