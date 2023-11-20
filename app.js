@@ -23,6 +23,10 @@ app.get('/logg-inn', (req, res) => {
 });
 
 app.get('/admin/rediger-bruker/:id', (req, res) => {
+  const getCookie = res.cookies.user;
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
@@ -33,6 +37,10 @@ app.get('/json/users', (req, res) => {
 });
 
 app.get('/admin/brukere', (req, res) => {
+  const getCookie = req.cookies.user;
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/brukere.html");
 });
 
@@ -54,17 +62,31 @@ app.post('/post/login', (req, res) => {
   verifyUser(user, password, res);
 });
 
-app.post('/post/redigerBruker', (req, res) => {
+app.post("/post/redigerBruker", (req, res) => {
   const { id, name, email, rolle } = req.body;
-  fetch('/json/users')
-  .then(res => res.json())
-  .then(data => {
-    const user = data.find(user => user.id == id);
-  });
-  // if(!name == user.name)
-  // if(!email == user.email)
-  // if(!rolle == user.rolle)
-})
+
+  const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
+  const user = selectStatement.get(id);
+
+  if (name != user.name) {
+    const updateStatement = db.prepare("UPDATE users SET name = ? WHERE id = ?");
+    updateStatement.run(name, id);
+  }
+
+  if (email != user.email) {
+    const updateStatement = db.prepare("UPDATE users SET email = ? WHERE id = ?");
+    updateStatement.run(email, id);
+  }
+
+  if (rolle != user.rolle) {
+    if(rolle != "velg") {
+      const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+      updateStatement.run(rolle, id);
+    }
+  }
+
+  res.redirect("/");
+});
 
 app.post('/post/delete', (req, res) => {
   const insert = db.exec("DELETE FROM users");
@@ -75,6 +97,18 @@ app.post('/post/delete', (req, res) => {
   if(insert) {
     res.redirect("/");
   }
+});
+
+app.post("/post/slettBruker/:id", (req, res) => {
+  const id = req.params.id;
+  const userEmail = req.cookies.user;
+  const user = db.prepare("SELECT * FROM users WHERE email = ?").get(userEmail);
+  if(user.id == id) {
+    return res.send("Du kan ikke slette deg selv!");
+  }
+  const deleteStatement = db.prepare("DELETE FROM users WHERE id = ?");
+  deleteStatement.run(id);
+  res.redirect("/admin/brukere");
 });
 
 app.post('/post/checkCookie', (req, res) => {

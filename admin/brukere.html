@@ -35,6 +35,7 @@
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
+        const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
         id.innerText = user.id;
@@ -44,6 +45,9 @@
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
+        deleteForm.setAttribute("class", "form-class");
+        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
+        deleteForm.setAttribute("method", "POST");
         deleteUser.innerText = "Slett";
         deleteUser.setAttribute("class", "btn btn-danger");
         tr.appendChild(id);
@@ -51,10 +55,11 @@
         tr.appendChild(email);
         tr.appendChild(rolle);
         actions.appendChild(editUser);
-        actions.appendChild(deleteUser);
+        deleteForm.appendChild(deleteUser);
+        actions.appendChild(deleteForm);
         tr.appendChild(actions);
         document.getElementById("lederBody").appendChild(tr);
-      })
+      });
 
       admins.forEach(user => {
         const tr = document.createElement("tr");
@@ -64,6 +69,7 @@
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
+        const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
         id.innerText = user.id;
@@ -73,6 +79,9 @@
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
+        deleteForm.setAttribute("class", "form-class");
+        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
+        deleteForm.setAttribute("method", "POST");
         deleteUser.innerText = "Slett";
         deleteUser.setAttribute("class", "btn btn-danger");
         tr.appendChild(id);
@@ -80,7 +89,8 @@
         tr.appendChild(email);
         tr.appendChild(rolle);
         actions.appendChild(editUser);
-        actions.appendChild(deleteUser);
+        deleteForm.appendChild(deleteUser);
+        actions.appendChild(deleteForm);
         tr.appendChild(actions);
         document.getElementById("administratorBody").appendChild(tr);
       })
@@ -92,27 +102,29 @@
         const email = document.createElement("td");
         const rolle = document.createElement("td");
         const actions = document.createElement("td");
-        const editUserA = document.createElement("a");
         const editUser = document.createElement("button");
+        const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
         id.innerText = user.id;
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
-        editUserA.href = `/admin/rediger-bruker/${user.id}`;
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
+        deleteForm.setAttribute("class", "form-class");
+        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
+        deleteForm.setAttribute("method", "POST");
         deleteUser.innerText = "Slett";
         deleteUser.setAttribute("class", "btn btn-danger");
         tr.appendChild(id);
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
-        editUserA.appendChild(editUser);
-        actions.appendChild(editUserA);
-        actions.appendChild(deleteUser);
+        actions.appendChild(editUser);
+        deleteForm.appendChild(deleteUser);
+        actions.appendChild(deleteForm);
         tr.appendChild(actions);
         document.getElementById("medlemBody").appendChild(tr);
       })
