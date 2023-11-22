@@ -56,7 +56,7 @@ app.post("/post/registrer", (req, res) => {
   if (insert) {
     res.redirect("/");
   }
-});
+}); //
 
 app.post("/post/login", (req, res) => {
   const { email, password } = req.body;
