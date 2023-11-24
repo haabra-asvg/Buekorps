@@ -32,11 +32,17 @@ app.get('/admin/rediger-bruker/:id', (req, res) => {
 
 app.get("/json/users", (req, res) => {
   const selectStatement = db.prepare(
-    "SELECT id, name, email, rolle FROM users"
+    "SELECT id, name, email, rolle, forelder1, forelder2, bataljon, kompani FROM users"
   );
   const users = selectStatement.all();
   res.send(users);
 });
+
+app.get("/json/bataljoner", (req, res) => {
+  const selectStatement = db.prepare("SELECT * FROM bataljon");
+  const users = selectStatement.all();
+  res.send(users);
+})
 
 app.get('/admin/brukere', (req, res) => {
   const getCookie = req.cookies.user;
@@ -95,7 +101,7 @@ app.post("/post/login", (req, res) => {
 });
 
 app.post("/post/redigerBruker", (req, res) => {
-  const { id, name, email, rolle } = req.body;
+  const { id, name, email, rolle, bataljon } = req.body;
 
   const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
   const user = selectStatement.get(id);
@@ -114,6 +120,13 @@ app.post("/post/redigerBruker", (req, res) => {
     if(rolle != "velg") {
       const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
       updateStatement.run(rolle, id);
+    }
+  }
+
+  if(bataljon != user.bataljon) {
+    if(bataljon != "velg") {
+      const updateStatement = db.prepare("UPDATE users SET bataljon = ? WHERE id = ?");
+      updateStatement.run(bataljon, id);
     }
   }
 

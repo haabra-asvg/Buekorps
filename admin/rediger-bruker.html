@@ -41,6 +41,9 @@
           <option value="medlem">Medlem</option>
           </script>
         </select>
+        <select class="mt-4 form-select form-select-sm" name="bataljon" id="bataljon">
+          <option selected value="velg">Velg ett bataljon...</option>
+        </select>
         <div class="btn-container d-flex justify-content-center">
           <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
         </div>
@@ -59,5 +62,16 @@
       document.getElementById("name").value = user.name;
       document.getElementById("email").value = user.email;
       document.getElementById("rolle").value = user.rolle;
+      fetch("/json/bataljoner")
+      .then((res) => res.json())
+      .then((data) => {
+        data.forEach((bataljon) => {
+          const option = document.createElement("option");
+          option.value = bataljon.bataljon_id;
+          option.innerText = bataljon.name;
+          if(bataljon.bataljon_id === user.bataljon) option.selected = true;
+          document.getElementById("bataljon").appendChild(option);
+        });
+      });
     });
 </script>
