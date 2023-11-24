@@ -32,6 +32,12 @@
       });
     });
   function fetchLedere() {
+    const lederSelect = document.getElementById("leder");
+    lederSelect.innerHTML = ""; // Remove all options
+    const velgOption = document.createElement("option");
+    velgOption.value = "velg";
+    velgOption.innerText = "Velg en leder...";
+    lederSelect.appendChild(velgOption);
     fetch("/json/users")
     .then((res) => res.json())
     .then((data) => {
@@ -64,7 +70,7 @@
         <option selected value="velg">Velg ett bataljon...</option>
       </select>
       <select class="mt-4 form-select form-select-sm" name="leder" id="leder">
-        <option value="velg">Velg en leder...</option>
+        
       </select>
       <div class="btn-container d-flex justify-content-center">
         <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
