@@ -181,7 +181,7 @@ app.post("/post/redigerBruker", (req, res) => {
     }
   }
 
-  res.redirect("/");
+  res.redirect("/admin/brukere");
 });
 
 app.post("/post/slettBruker/:id", (req, res) => {

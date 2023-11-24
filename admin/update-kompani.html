@@ -47,19 +47,28 @@
     velgOption.value = "velg";
     velgOption.innerText = "Velg en leder...";
     lederSelect.appendChild(velgOption);
-    fetch("/json/users")
-    .then((res) => res.json())
-    .then((data) => {
-      const getBataljon = document.getElementById("bataljon");
-      data.forEach((user) => {
-        if(user.bataljon == bataljon.value) {
-          const option = document.createElement("option");
-          option.value = user.id;
-          option.innerText = user.name;
-          document.getElementById("leder").appendChild(option);
-        }
-      })
-    });
+    fetch("/json/kompanier")
+      .then((res) => res.json())
+      .then((data) => {
+        data.forEach((kompani) => {
+          fetch("/json/users")
+            .then((res) => res.json())
+            .then((data) => {
+              const getBataljon = document.getElementById("bataljon");
+              data.forEach((user) => {
+                if(user.bataljon == bataljon.value) {
+                  const option = document.createElement("option");
+                  option.value = user.id;
+                  option.innerText = user.name;
+                  if(user.id == kompani.leder) {
+                    option.selected = true;
+                  }
+                  document.getElementById("leder").appendChild(option);
+                }
+              });
+            });
+        });
+      });
   }
   fetchLedere();
   });
