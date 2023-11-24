@@ -54,7 +54,16 @@ app.get("/admin/createBataljon", (req, res) => {
   const user = selectStatement.get(getCookie);
   if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/create-bataljon.html");
-})
+});
+
+app.post("/post/createBataljon", (req, res) => {
+  const { bataljon_id, name } = req.body;
+  const insertStatement = db.prepare("INSERT INTO bataljon (bataljon_id, name, medlemmer) VALUES (?, ?, ?)");
+  const insert = insertStatement.run(bataljon_id, name, 0);
+  if(insert) {
+    res.redirect("/");
+  }
+});
 
 app.get("/leder/brukere", (req, res) => {
   const getCookie = req.cookies.user;
@@ -153,8 +162,22 @@ app.post('/post/checkCookie', (req, res) => {
     console.log("[" + colors.green.bold("CHECK COOKIE") + "] " + user);
 });
 
-app.post("/post/dropTable", (req, res) => {
+app.post("/post/dropUsers", (req, res) => {
   const drop = db.exec("DROP TABLE users");
+  if (drop) {
+    res.redirect("/");
+  }
+});
+
+app.post("/post/dropBataljon", (req, res) => {
+  const drop = db.exec("DROP TABLE bataljon");
+  if (drop) {
+    res.redirect("/");
+  }
+});
+
+app.post("/post/dropKompani", (req, res) => {
+  const drop = db.exec("DROP TABLE kompani");
   if (drop) {
     res.redirect("/");
   }
