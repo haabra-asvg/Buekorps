@@ -81,7 +81,21 @@ app.get("/admin/createKompani", (req, res) => {
 });
 
 app.post("/post/createKompani", (req, res) => {
-
+  const { name, bataljon, leder } = req.body;
+  if(bataljon == "velg") return res.send("Du må velge en bataljon!");
+  if(leder == "velg") {
+    const insertStatement = db.prepare("INSERT INTO kompani (name, bataljon_id, medlemmer) VALUES (?, ?, ?)");
+    const insert = insertStatement.run(name, bataljon, 0);
+    if(insert) {
+      res.redirect("/");
+    }
+  } else {
+    const insertStatement = db.prepare("INSERT INTO kompani (name, bataljon_id, leder, medlemmer) VALUES (?, ?, ?, ?)");
+    const insert = insertStatement.run(name, bataljon, leder, 0);
+    if(insert) {
+      res.redirect("/");
+    }
+  }
 });
 
 app.get("/leder/brukere", (req, res) => {

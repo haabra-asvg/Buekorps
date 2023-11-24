@@ -20,6 +20,6 @@ CREATE TABLE IF NOT EXISTS kompani (
   kompani_id INTEGER PRIMARY KEY NOT NULL,
   bataljon_id NUMBER NOT NULL,
   name TEXT NOT NULL,
-  leder TEXT NOT NULL,
+  leder TEXT,
   medlemmer NUMBER NOT NULL
 )
