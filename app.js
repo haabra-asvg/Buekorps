@@ -90,12 +90,23 @@ app.post("/post/createKompani", (req, res) => {
       res.redirect("/");
     }
   } else {
+    const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+    updateStatement.run("leder", leder);
     const insertStatement = db.prepare("INSERT INTO kompani (name, bataljon_id, leder, medlemmer) VALUES (?, ?, ?, ?)");
     const insert = insertStatement.run(name, bataljon, leder, 0);
     if(insert) {
       res.redirect("/");
     }
   }
+});
+
+app.get("/admin/updateKompani", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/admin/update-kompani.html");
 });
 
 app.get("/leder/brukere", (req, res) => {
