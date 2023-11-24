@@ -36,6 +36,8 @@
         const name = document.createElement("td");
         const email = document.createElement("td");
         const rolle = document.createElement("td");
+        const kompani = document.createElement("td");
+        const bataljon = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
         const editUserA = document.createElement("a");
@@ -46,6 +48,8 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        kompani.innerText = user.kompani;
+        bataljon.innerText = user.bataljon;
         editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
@@ -59,6 +63,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
+        tr.appendChild(kompani);
+        tr.appendChild(bataljon);
         editUserA.appendChild(editUser);
         actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
@@ -73,6 +79,8 @@
         const name = document.createElement("td");
         const email = document.createElement("td");
         const rolle = document.createElement("td");
+        const kompani = document.createElement("td");
+        const bataljon = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
         const editUserA = document.createElement("a");
@@ -83,6 +91,8 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        kompani.innerText = user.kompani;
+        bataljon.innerText = user.bataljon;
         editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
@@ -96,6 +106,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
+        tr.appendChild(kompani);
+        tr.appendChild(bataljon);
         editUserA.appendChild(editUser);
         actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
@@ -110,6 +122,8 @@
         const name = document.createElement("td");
         const email = document.createElement("td");
         const rolle = document.createElement("td");
+        const kompani = document.createElement("td");
+        const bataljon = document.createElement("td");
         const actions = document.createElement("td");
         const editUser = document.createElement("button");
         const editUserA = document.createElement("a");
@@ -120,6 +134,8 @@
         name.innerText = user.name;
         email.innerText = user.email;
         rolle.innerText = user.rolle;
+        kompani.innerText = user.kompani;
+        bataljon.innerText = user.bataljon;
         editUserA.href = `/admin/rediger-bruker/${user.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
@@ -133,6 +149,8 @@
         tr.appendChild(name);
         tr.appendChild(email);
         tr.appendChild(rolle);
+        tr.appendChild(kompani);
+        tr.appendChild(bataljon);
         editUserA.appendChild(editUser);
         actions.appendChild(editUserA);
         deleteForm.appendChild(deleteUser);
@@ -151,6 +169,8 @@
         <th>Navn</th>
         <th>E-post</th>
         <th>Rolle</th>
+        <th>Kompani</th>
+        <th>Bataljon</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -166,6 +186,8 @@
         <th>Navn</th>
         <th>E-post</th>
         <th>Rolle</th>
+        <th>Kompani</th>
+        <th>Bataljon</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -181,6 +203,8 @@
         <th>Navn</th>
         <th>E-post</th>
         <th>Rolle</th>
+        <th>Kompani</th>
+        <th>Bataljon</th>
         <th>Actions</th>
       </tr>
     </thead>

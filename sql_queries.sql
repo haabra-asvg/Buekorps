@@ -5,5 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
   rolle TEXT NOT NULL,
   forelder1 TEXT,
   forelder2 TEXT,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  kompani TEXT,
+  bataljon TEXT
 )

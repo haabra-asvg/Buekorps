@@ -47,13 +47,22 @@ app.get('/admin/brukere', (req, res) => {
   res.sendFile(__dirname + "/admin/brukere.html");
 });
 
+app.get("/leder/brukere", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle === "medlem") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/leder/brukere.html");
+})
+
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;
   const insertStatement = db.prepare(
-    "INSERT INTO users (name, email, rolle, forelder1, forelder2, password) VALUES (?, ?, ?, ?, ?, ?)"
+    "INSERT INTO users (name, email, rolle, password) VALUES (?, ?, ?, ?)"
   );
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const insert = insertStatement.run(name, email, "admin", "admin", "admin", hashedPassword);
+  const insert = insertStatement.run(name, email, "admin", hashedPassword);
   if (insert) {
     res.redirect("/");
   }
@@ -140,6 +149,11 @@ app.post("/post/dropTable", (req, res) => {
   if (drop) {
     res.redirect("/");
   }
+});
+
+app.post("/post/loggUt", (req, res) => {
+  res.clearCookie("user");
+  res.redirect("/");
 });
 
 function verifyUser(user, password, res) {
