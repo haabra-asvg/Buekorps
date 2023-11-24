@@ -26,7 +26,7 @@ app.get('/admin/rediger-bruker/:id', (req, res) => {
   const getCookie = req.cookies.user;
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
   const user = selectStatement.get(getCookie);
-  if(user.rolle != "administrator") return res.send("Du har ikke tilgang til denne siden!");
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
@@ -40,23 +40,24 @@ app.get("/json/users", (req, res) => {
 
 app.get('/admin/brukere', (req, res) => {
   const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
   const user = selectStatement.get(getCookie);
-  if(user.rolle != "administrator") return res.send("Du har ikke tilgang til denne siden!");
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/admin/brukere.html");
 });
 
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;
   const insertStatement = db.prepare(
-    "INSERT INTO users (name, email, rolle, password) VALUES (?, ?, ?, ?)"
+    "INSERT INTO users (name, email, rolle, forelder1, forelder2, password) VALUES (?, ?, ?, ?, ?, ?)"
   );
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const insert = insertStatement.run(name, email, "medlem", hashedPassword);
+  const insert = insertStatement.run(name, email, "admin", "admin", "admin", hashedPassword);
   if (insert) {
     res.redirect("/");
   }
-}); //
+});
 
 app.post("/post/login", (req, res) => {
   const { email, password } = req.body;
@@ -132,6 +133,13 @@ app.post('/post/checkCookie', (req, res) => {
   const user = req.cookies.user;
   if (showLog)
     console.log("[" + colors.green.bold("CHECK COOKIE") + "] " + user);
+});
+
+app.post("/post/dropTable", (req, res) => {
+  const drop = db.exec("DROP TABLE users");
+  if (drop) {
+    res.redirect("/");
+  }
 });
 
 function verifyUser(user, password, res) {
