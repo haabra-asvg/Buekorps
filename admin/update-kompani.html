@@ -20,13 +20,13 @@
 
 <script defer>
   const kompaniId = window.location.pathname.split("/").pop();
+  document.addEventListener("DOMContentLoaded", function() {
   fetch("/json/kompanier")
     .then((res) => res.json())
     .then((data) => {
       const kompani = data.find((kompani) => kompani.kompani_id == kompaniId);
       document.getElementById("id").value = kompani.kompani_id;
       document.getElementById("name").value = kompani.name;
-      document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("bataljon").addEventListener("change", fetchLedere);
         fetch("/json/bataljoner")
           .then((res) => res.json())
@@ -37,40 +37,39 @@
               option.innerText = bataljon.name;
               document.getElementById("bataljon").appendChild(option);
             });
-          });
       });
-
-      function fetchLedere() {
-        const lederSelect = document.getElementById("leder");
-        lederSelect.innerHTML = "";
-        const velgOption = document.createElement("option");
-        velgOption.value = "velg";
-        velgOption.innerText = "Velg en leder...";
-        lederSelect.appendChild(velgOption);
-        fetch("/json/users")
-          .then((res) => res.json())
-          .then((data) => {
-            const getBataljon = document.getElementById("bataljon");
-            data.forEach((user) => {
-              console.log(user.bataljon + " " + getBataljon.value);
-              if (user.bataljon == bataljon.value) {
-                const option = document.createElement("option");
-                option.value = user.id;
-                option.innerText = user.name;
-                document.getElementById("leder").appendChild(option);
-              }
-            })
-          });
-      }
-      fetchLedere();
     });
+
+  function fetchLedere() {
+    const lederSelect = document.getElementById("leder");
+    lederSelect.innerHTML = "";
+    const velgOption = document.createElement("option");
+    velgOption.value = "velg";
+    velgOption.innerText = "Velg en leder...";
+    lederSelect.appendChild(velgOption);
+    fetch("/json/users")
+    .then((res) => res.json())
+    .then((data) => {
+      const getBataljon = document.getElementById("bataljon");
+      data.forEach((user) => {
+        if(user.bataljon == bataljon.value) {
+          const option = document.createElement("option");
+          option.value = user.id;
+          option.innerText = user.name;
+          document.getElementById("leder").appendChild(option);
+        }
+      })
+    });
+  }
+  fetchLedere();
+  });
 </script>
 
 <body>
   <form action="/post/createKompani" method="POST">
     <div class="login-container mt-5 border rounded p-3 bg-body-tertiary w-50 mx-auto">
       <h3 class="mb-3">
-        <center>Lag kompani</center>
+        <center>Oppdater kompani</center>
       </h3>
       <input type="number" name="id" class="form-control" id="id" placeholder="ID" readonly /> <br />
       <input type="text" name="name" class="form-control" id="name" placeholder="Fullt navn" /> <br />

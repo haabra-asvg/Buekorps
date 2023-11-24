@@ -43,7 +43,6 @@
     .then((data) => {
       const getBataljon = document.getElementById("bataljon");
       data.forEach((user) => {
-        console.log(user.bataljon + " " + getBataljon.value);
         if(user.bataljon == bataljon.value) {
           const option = document.createElement("option");
           option.value = user.id;
