@@ -44,6 +44,12 @@ app.get("/json/bataljoner", (req, res) => {
   res.send(users);
 })
 
+app.get("/json/kompanier", (req, res) => {
+  const selectStatement = db.prepare("SELECT * FROM kompani");
+  const users = selectStatement.all();
+  res.send(users);
+});
+
 app.get('/admin/brukere', (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
@@ -100,7 +106,7 @@ app.post("/post/createKompani", (req, res) => {
   }
 });
 
-app.get("/admin/updateKompani", (req, res) => {
+app.get("/admin/updateKompani/:id", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
@@ -139,7 +145,7 @@ app.post("/post/login", (req, res) => {
 });
 
 app.post("/post/redigerBruker", (req, res) => {
-  const { id, name, email, rolle, bataljon } = req.body;
+  const { id, name, email, rolle, bataljon, kompani } = req.body;
 
   const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
   const user = selectStatement.get(id);
@@ -165,6 +171,13 @@ app.post("/post/redigerBruker", (req, res) => {
     if(bataljon != "velg") {
       const updateStatement = db.prepare("UPDATE users SET bataljon = ? WHERE id = ?");
       updateStatement.run(bataljon, id);
+    }
+  }
+
+  if(kompani != user.kompani) {
+    if(kompani != "velg") {
+      const updateStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
+      updateStatement.run(kompani, id);
     }
   }
 

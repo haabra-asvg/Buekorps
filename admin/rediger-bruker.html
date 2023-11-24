@@ -44,6 +44,9 @@
         <select class="mt-4 form-select form-select-sm" name="bataljon" id="bataljon">
           <option selected value="velg">Velg ett bataljon...</option>
         </select>
+        <select name="kompani" id="kompani" class="mt-4 form-select form-select-sm">
+          <option selected value="velg">Velg ett kompani...</option>
+        </select>
         <div class="btn-container d-flex justify-content-center">
           <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
         </div>
@@ -73,5 +76,16 @@
           document.getElementById("bataljon").appendChild(option);
         });
       });
+      fetch("/json/kompanier")
+        .then((res) => res.json())
+        .then((data) => {
+          data.forEach((kompani) => {
+            const option = document.createElement("option");
+            option.value = kompani.kompani_id;
+            option.innerText = kompani.name;
+            if(kompani.kompani_id === user.kompani) option.selected = true;
+            document.getElementById("kompani").appendChild(option);
+          });
+        });
     });
 </script>
