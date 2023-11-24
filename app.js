@@ -71,6 +71,19 @@ app.post("/post/createBataljon", (req, res) => {
   }
 });
 
+app.get("/admin/createKompani", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/admin/create-kompani.html");
+});
+
+app.post("/post/createKompani", (req, res) => {
+
+});
+
 app.get("/leder/brukere", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
