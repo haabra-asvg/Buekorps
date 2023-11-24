@@ -115,6 +115,44 @@ app.get("/admin/updateKompani/:id", (req, res) => {
   res.sendFile(__dirname + "/admin/update-kompani.html");
 });
 
+app.post("/post/updateKompani", (req, res) => {
+  const { id, name, bataljon, leder } = req.body;
+
+  const selectStatement = db.prepare("SELECT * FROM kompani WHERE kompani_id = ?");
+  const kompani = selectStatement.get(id);
+
+  if (name != kompani.name) {
+    const updateStatement = db.prepare("UPDATE kompani SET name = ? WHERE kompani_id = ?");
+    updateStatement.run(name, id);
+  }
+
+  if (bataljon != kompani.bataljon_id) {
+    if(bataljon != "velg") {
+      const updateStatement = db.prepare("UPDATE kompani SET bataljon_id = ? WHERE kompani_id = ?");
+      updateStatement.run(email, id);
+    }
+  }
+
+  if (leder != kompani.leder) {
+    if(leder != "velg") {
+
+      // OLD LEADER
+      const getLeaderStatement = db.prepare("SELECT * FROM users WHERE rolle = 'leder' AND kompani = ?");
+      const getLeader = getLeaderStatement.get(id);
+      const removeLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+      removeLeader.run("medlem", getLeader.id);
+
+      // NEW LEADER
+      const updateStatement = db.prepare("UPDATE kompani SET leder = ? WHERE kompani_id = ?");
+      updateStatement.run(leder, id);
+      const addLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+      addLeader.run("leder", leder);
+    }
+  }
+
+  res.redirect("/admin/brukere");
+});
+
 app.get("/leder/brukere", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
