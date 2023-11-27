@@ -1,11 +1,74 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </head>
 <body>
   <h1>Admin Index</h1>
+  <div class="container">
+    <div class="brukere border rounded p-3 bg-body-tertiary">
+      <div class="header">
+        <h3>Brukere</h3>
+      </div>
+      <div class="body">
+        <p>Trykk her for å se brukere</p>
+        <a href="/admin/brukere">Til brukere →</a>
+      </div>
+      <div class="footer mt-5">
+        <p>Laget av meg</p>
+      </div>
+    </div>
+    <div class="kompani border rounded p-3 bg-body-tertiary">
+      <div class="header">
+        <h3>Kompani</h3>
+      </div>
+      <div class="body">
+        <p>Trykk her for å se kompanier</p>
+        <a href="/admin/kompanier">Til kompanier →</a>
+      </div>
+      <div class="footer mt-5">
+        <p>Laget av meg</p>
+      </div>
+    </div>
+    <div class="bataljon border rounded p-3 bg-body-tertiary">
+      <div class="header">
+        <h3>Bataljon</h3>
+      </div>
+      <div class="body">
+        <p>Trykk her for å se bataljoner</p>
+        <a href="/admin/bataljoner">Til bataljoner →</a>
+      </div>
+      <div class="footer mt-5">
+        <p>Laget av meg</p>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
+
+<style>
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .container > div {
+    flex: 0 0 calc(33.33% - 20px);
+    margin: 10px;
+    box-sizing: border-box;
+  }
+
+  .footer {
+    opacity: 0.6;
+    font-style: italic;
+  }
+
+  h1 {
+    text-align: center;
+  }
+</style>

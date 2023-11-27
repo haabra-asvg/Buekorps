@@ -59,6 +59,24 @@ app.get("/admin", (req, res) => {
   res.sendFile(__dirname + "/admin/index.html");
 });
 
+app.get("/admin/kompanier", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/admin/kompanier.html");
+});
+
+app.get("/admin/bataljoner", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/admin/bataljoner.html");
+});
+
 app.get('/admin/brukere', (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
