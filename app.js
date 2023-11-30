@@ -315,8 +315,12 @@ app.post("/post/redigerBruker", (req, res) => {
       const bataljonMedlemmer = selectStatement.get(bataljon);
       const updateStatement2 = db.prepare("UPDATE bataljon SET medlemmer = ? WHERE bataljon_id = ?");
       updateStatement2.run(bataljonMedlemmer.medlemmer + 1, bataljon);
-      const updateStatement3 = db.prepare("UPDATE bataljon SET medlemmer = ? WHERE bataljon_id = ?");
-      updateStatement3.run(bataljonMedlemmer.medlemmer - 1, user.bataljon);
+      if(user.bataljon != undefined) {
+        const selectStatement2 = db.prepare("SELECT * FROM bataljon WHERE bataljon_id = ?");
+        const bataljonMedlemmer2 = selectStatement2.get(user.bataljon);
+        const updateStatement3 = db.prepare("UPDATE bataljon SET medlemmer = ? WHERE bataljon_id = ?");
+        updateStatement3.run(bataljonMedlemmer2.medlemmer - 1, user.bataljon);
+      }
     }
   }
 
