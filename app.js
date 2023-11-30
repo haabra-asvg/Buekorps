@@ -195,7 +195,7 @@ app.post("/post/slettKompani/:id", (req, res) => {
         setStatement.run("medlem", user.id);
       }
     }
-  })
+  });
 
   const deleteStatement = db.prepare("DELETE FROM kompani WHERE kompani_id = ?");
   deleteStatement.run(id);
