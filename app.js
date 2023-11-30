@@ -100,7 +100,7 @@ app.post("/post/createBataljon", (req, res) => {
   const insertStatement = db.prepare("INSERT INTO bataljon (bataljon_id, name, medlemmer) VALUES (?, ?, ?)");
   const insert = insertStatement.run(bataljon_id, name, 0);
   if(insert) {
-    res.redirect("/");
+    res.redirect("/admin/bataljoner");
   }
 });
 
@@ -130,7 +130,7 @@ app.post("/post/createKompani", (req, res) => {
     const kompani = getKompani.get(leder);
     updateStatement.run("leder", kompani.kompani_id, leder);
     if(insert) {
-      res.redirect("/");
+      res.redirect("/admin/kompanier");
     }
   }
 });
@@ -364,7 +364,7 @@ app.post("/post/delete", (req, res) => {
     res.clearCookie("user");
   }
   if (insert) {
-    res.redirect("/");
+    res.redirect("/admin/brukere");
   }
 });
 
