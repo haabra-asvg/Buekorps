@@ -180,6 +180,29 @@ app.post("/post/updateKompani", (req, res) => {
   res.redirect("/admin/kompanier");
 });
 
+app.post("/post/slettKompani/:id", (req, res) => {
+  const id = req.params.id;
+
+  const selectStatement = db.prepare("SELECT * FROM users");
+  const users = selectStatement.all();
+
+  users.forEach(user => {
+    if(user.kompani == id) {
+      const setStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
+      setStatement.run(undefined, user.id);
+      if(user.rolle == "leder") {
+        const setStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+        setStatement.run("medlem", user.id);
+      }
+    }
+  })
+
+  const deleteStatement = db.prepare("DELETE FROM kompani WHERE kompani_id = ?");
+  deleteStatement.run(id);
+
+  res.redirect("/admin/kompanier");
+});
+
 app.get("/admin/updateBataljon/:id", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
