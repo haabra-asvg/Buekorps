@@ -168,8 +168,10 @@ app.post("/post/updateKompani", (req, res) => {
       // OLD LEADER
       const getLeaderStatement = db.prepare("SELECT * FROM users WHERE rolle = 'leder' AND kompani = ?");
       const getLeader = getLeaderStatement.get(id);
-      const removeLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
-      removeLeader.run("medlem", getLeader.id);
+      if(getLeader) {
+        const removeLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+        removeLeader.run("medlem", getLeader.id);
+      }
 
       // NEW LEADER
       const updateStatement = db.prepare("UPDATE kompani SET leder = ? WHERE kompani_id = ?");
