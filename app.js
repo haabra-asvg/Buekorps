@@ -158,7 +158,7 @@ app.post("/post/updateKompani", (req, res) => {
   if (bataljon != kompani.bataljon_id) {
     if(bataljon != "velg") {
       const updateStatement = db.prepare("UPDATE kompani SET bataljon_id = ? WHERE kompani_id = ?");
-      updateStatement.run(email, id);
+      updateStatement.run(bataljon, id);
     }
   }
 
