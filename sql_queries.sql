@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
   forelder1 TEXT,
   forelder2 TEXT,
   password TEXT NOT NULL,
-  kompani TEXT,
+  kompani NUMBER,
   bataljon NUMBER
 )
 

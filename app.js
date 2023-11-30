@@ -120,13 +120,15 @@ app.post("/post/createKompani", (req, res) => {
     const insertStatement = db.prepare("INSERT INTO kompani (name, bataljon_id, medlemmer) VALUES (?, ?, ?)");
     const insert = insertStatement.run(name, bataljon, 0);
     if(insert) {
-      res.redirect("/");
+      res.redirect("/admin/kompanier");
     }
   } else {
-    const updateStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
-    updateStatement.run("leder", leder);
     const insertStatement = db.prepare("INSERT INTO kompani (name, bataljon_id, leder, medlemmer) VALUES (?, ?, ?, ?)");
-    const insert = insertStatement.run(name, bataljon, leder, 0);
+    const insert = insertStatement.run(name, bataljon, leder, 1);
+    const updateStatement = db.prepare("UPDATE users SET (rolle, kompani) = (?, ?) WHERE id = ?");
+    const getKompani = db.prepare("SELECT * FROM kompani WHERE leder = ?");
+    const kompani = getKompani.get(leder);
+    updateStatement.run("leder", kompani.kompani_id, leder);
     if(insert) {
       res.redirect("/");
     }
@@ -226,6 +228,33 @@ app.post("/post/updateBataljon", (req, res) => {
   res.redirect("/admin/bataljoner");
 });
 
+app.post("/post/slettBataljon/:id", (req, res) => {
+  const id = req.params.id;
+
+  const selectStatement = db.prepare("SELECT * FROM users");
+  const users = selectStatement.all();
+
+  users.forEach(user => {
+    if(user.bataljon == id) {
+      const setStatement = db.prepare("UPDATE users SET bataljon = ? WHERE id = ?");
+      setStatement.run(undefined, user.id);
+      if(user.kompani != undefined) {
+        const setStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
+        setStatement.run(undefined, user.id);
+      }
+      if(user.rolle == "leder") {
+        const setStatement = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+        setStatement.run("medlem", user.id);
+      }
+    }
+  });
+
+  const deleteStatement = db.prepare("DELETE FROM bataljon WHERE bataljon_id = ?");
+  deleteStatement.run(id);
+
+  res.redirect("/admin/bataljoner");
+});
+
 app.get("/leder/brukere", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
@@ -282,6 +311,12 @@ app.post("/post/redigerBruker", (req, res) => {
     if(bataljon != "velg") {
       const updateStatement = db.prepare("UPDATE users SET bataljon = ? WHERE id = ?");
       updateStatement.run(bataljon, id);
+      const selectStatement = db.prepare("SELECT * FROM bataljon WHERE bataljon_id = ?");
+      const bataljonMedlemmer = selectStatement.get(bataljon);
+      const updateStatement2 = db.prepare("UPDATE bataljon SET medlemmer = ? WHERE bataljon_id = ?");
+      updateStatement2.run(bataljonMedlemmer.medlemmer + 1, bataljon);
+      const updateStatement3 = db.prepare("UPDATE bataljon SET medlemmer = ? WHERE bataljon_id = ?");
+      updateStatement3.run(bataljonMedlemmer.medlemmer - 1, user.bataljon);
     }
   }
 
@@ -289,6 +324,16 @@ app.post("/post/redigerBruker", (req, res) => {
     if(kompani != "velg") {
       const updateStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
       updateStatement.run(kompani, id);
+      const selectStatement = db.prepare("SELECT * FROM kompani WHERE kompani_id = ?");
+      const kompaniMedlemmer = selectStatement.get(kompani);
+      const updateStatement2 = db.prepare("UPDATE kompani SET medlemmer = ? WHERE kompani_id = ?");
+      updateStatement2.run(kompaniMedlemmer.medlemmer + 1, kompani);
+      if(user.kompani != undefined) {
+        const selectStatement2 = db.prepare("SELECT * FROM kompani WHERE kompani_id = ?");
+        const kompaniMedlemmer2 = selectStatement2.get(user.kompani);
+        const updateStatement3 = db.prepare("UPDATE kompani SET medlemmer = ? WHERE kompani_id = ?");
+        updateStatement3.run(kompaniMedlemmer2.medlemmer - 1, user.kompani);
+      }
     }
   }
 
