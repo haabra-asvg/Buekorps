@@ -163,17 +163,20 @@ app.post("/post/updateKompani", (req, res) => {
   }
 
   if (leder != kompani.leder) {
-    if(leder != "velg") {
 
-      // OLD LEADER
-      const getLeaderStatement = db.prepare("SELECT * FROM users WHERE rolle = 'leder' AND kompani = ?");
-      const getLeader = getLeaderStatement.get(id);
-      if(getLeader) {
-        const removeLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
-        removeLeader.run("medlem", getLeader.id);
-      }
+    // OLD LEADER
+    const getLeaderStatement = db.prepare("SELECT * FROM users WHERE rolle = 'leder' AND kompani = ?");
+    const getLeader = getLeaderStatement.get(id);
+    if(getLeader) {
+      const removeLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
+      removeLeader.run("medlem", getLeader.id);
+    }
 
-      // NEW LEADER
+    // NEW LEADER
+    if(leder == "velg") {
+      const updateStatement = db.prepare("UPDATE kompani SET leder = ? WHERE kompani_id = ?");
+      updateStatement.run(undefined, id);
+    } else {
       const updateStatement = db.prepare("UPDATE kompani SET leder = ? WHERE kompani_id = ?");
       updateStatement.run(leder, id);
       const addLeader = db.prepare("UPDATE users SET rolle = ? WHERE id = ?");
