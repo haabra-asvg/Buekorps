@@ -177,7 +177,30 @@ app.post("/post/updateKompani", (req, res) => {
     }
   }
 
-  res.redirect("/admin/brukere");
+  res.redirect("/admin/kompanier");
+});
+
+app.get("/admin/updateBataljon/:id", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
+  res.sendFile(__dirname + "/admin/update-bataljon.html");
+});
+
+app.post("/post/updateBataljon", (req, res) => {
+  const { id, name } = req.body;
+
+  const selectStatement = db.prepare("SELECT * FROM bataljon WHERE bataljon_id = ?");
+  const bataljon = selectStatement.get(id);
+
+  if (name != bataljon.name) {
+    const updateStatement = db.prepare("UPDATE bataljon SET name = ? WHERE bataljon_id = ?");
+    updateStatement.run(name, id);
+  }
+
+  res.redirect("/admin/bataljoner");
 });
 
 app.get("/leder/brukere", (req, res) => {

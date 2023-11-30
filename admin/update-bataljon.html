@@ -19,34 +19,20 @@
 </style>
 
 <script defer>
-  const kompaniId = window.location.pathname.split("/").pop();
+  const bataljonId = window.location.pathname.split("/").pop();
   document.addEventListener("DOMContentLoaded", function() {
-  fetch("/json/kompanier")
+  fetch("/json/bataljoner")
     .then((res) => res.json())
     .then((data) => {
-      const kompani = data.find((kompani) => kompani.kompani_id == kompaniId);
-      document.getElementById("id").value = kompani.kompani_id;
-      document.getElementById("name").value = kompani.name;
-        document.getElementById("bataljon").addEventListener("change", fetchLedere);
-        fetch("/json/bataljoner")
-          .then((res) => res.json())
-          .then((data) => {
-            data.forEach((bataljon) => {
-              const option = document.createElement("option");
-              option.value = bataljon.bataljon_id;
-              option.innerText = bataljon.name;
-              if(kompani.bataljon_id === bataljon.bataljon_id) {
-                option.selected = true;
-              }
-              document.getElementById("bataljon").appendChild(option);
-            });
-      });
+      const bataljon = data.find((bataljon) => bataljon.bataljon_id == bataljonId);
+      document.getElementById("id").value = bataljon.bataljon_id;
+      document.getElementById("name").value = bataljon.name;
     });
   });
 </script>
 
 <body>
-  <form action="/post/updateKompani" method="POST">
+  <form action="/post/updateBataljon" method="POST">
     <div class="login-container mt-5 border rounded p-3 bg-body-tertiary w-50 mx-auto">
       <h3 class="mb-3">
         <center>Oppdater bataljon</center>
