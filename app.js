@@ -9,6 +9,7 @@ const showLog = true;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.set('view engine', 'ejs');
 
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
@@ -264,10 +265,18 @@ app.get("/leder/brukere", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
   const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
-  const user = selectStatement.get(getCookie);
-  if(user.rolle === "medlem") return res.send("Du har ikke tilgang til denne siden!");
-  res.sendFile(__dirname + "/leder/brukere.html");
-})
+  const getUser = selectStatement.get(getCookie);
+  if(getUser.rolle === "medlem") return res.send("Du har ikke tilgang til denne siden!");
+  res.render('brukere', { user: getUser });
+});
+
+app.get("/medlem/profil", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const getUser = selectStatement.get(getCookie);
+  res.render('profil', { user: getUser });
+});
 
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;
