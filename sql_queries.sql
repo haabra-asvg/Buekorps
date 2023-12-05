@@ -3,8 +3,7 @@ CREATE TABLE IF NOT EXISTS users (
   name TEXT NOT NULL,
   email TEXT NOT NULL,
   rolle TEXT NOT NULL,
-  forelder1 TEXT,
-  forelder2 TEXT,
+  tlf TEXT,
   password TEXT NOT NULL,
   kompani NUMBER,
   bataljon NUMBER

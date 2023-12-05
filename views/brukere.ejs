@@ -29,6 +29,7 @@
           const id = document.createElement("td");
           const name = document.createElement("td");
           const epost = document.createElement("td");
+          const tlf = document.createElement("td");
           const rolle = document.createElement("td");
           const kompani = document.createElement("td");
           const bataljon = document.createElement("td");
@@ -38,6 +39,7 @@
           id.innerText = bruker.id;
           name.innerText = bruker.name;
           epost.innerText = bruker.email;
+          tlf.innerText = bruker.tlf;
           rolle.innerText = bruker.rolle;
           kompani.innerText = bruker.kompani;
           bataljon.innerText = bruker.bataljon;
@@ -46,6 +48,7 @@
           tr.appendChild(id);
           tr.appendChild(name);
           tr.appendChild(epost);
+          tr.appendChild(tlf);
           tr.appendChild(rolle);
           tr.appendChild(kompani);
           tr.appendChild(bataljon);
@@ -66,6 +69,7 @@
         <th>#</th>
         <th>Navn</th>
         <th>E-post</th>
+        <th>Tlf</th>
         <th>Rolle</th>
         <th>Kompani</th>
         <th>Bataljon</th>

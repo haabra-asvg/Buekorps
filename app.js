@@ -33,7 +33,7 @@ app.get('/admin/rediger-bruker/:id', (req, res) => {
 
 app.get("/json/users", (req, res) => {
   const selectStatement = db.prepare(
-    "SELECT id, name, email, rolle, forelder1, forelder2, bataljon, kompani FROM users"
+    "SELECT id, name, email, rolle, tlf, bataljon, kompani FROM users"
   );
   const users = selectStatement.all();
   res.send(users);
@@ -299,7 +299,7 @@ app.post("/post/login", (req, res) => {
 });
 
 app.post("/post/redigerBruker", (req, res) => {
-  const { id, name, email, rolle, bataljon, kompani } = req.body;
+  const { id, name, email, rolle, bataljon, kompani, tlf } = req.body;
 
   const selectStatement = db.prepare("SELECT * FROM users WHERE id = ?");
   const user = selectStatement.get(id);
@@ -353,6 +353,11 @@ app.post("/post/redigerBruker", (req, res) => {
         updateStatement3.run(kompaniMedlemmer2.medlemmer - 1, user.kompani);
       }
     }
+  }
+
+  if(tlf != user.tlf) {
+    const updateStatement = db.prepare("UPDATE users SET tlf = ? WHERE id = ?");
+    updateStatement.run(tlf, id);
   }
 
   res.redirect("/admin/brukere");

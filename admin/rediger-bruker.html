@@ -61,6 +61,7 @@
         <input type="number" name="id" class="form-control" id="id" placeholder="ID" readonly /> <br />
         <input type="text" name="name" class="form-control" id="name" placeholder="Fullt navn" /> <br />
         <input type="email" name="email" class="form-control" id="email" placeholder="Email" /> <br />
+        <input type="text" name="tlf" class="form-control" id="tlf" placeholder="Telefon nummer" /> <br />
         <select class="form-select form-select-sm" name="rolle" id="rolle">
           <option selected value="velg">Velg en rolle...</option>
           <option value="admin">Administrator</option>
@@ -92,6 +93,7 @@
       document.getElementById("name").value = user.name;
       document.getElementById("email").value = user.email;
       document.getElementById("rolle").value = user.rolle;
+      document.getElementById("tlf").value = user.tlf;
       fetch("/json/bataljoner")
       .then((res) => res.json())
       .then((data) => {
