@@ -57,6 +57,7 @@
           tr.appendChild(actions);
           document.getElementById("medlemmerBody").appendChild(tr);
         }
+        if(!bruker.kompani) return res.send("Du er ikke medlem i et kompani!");
       })
     });
 </script>

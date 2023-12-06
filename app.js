@@ -391,6 +391,15 @@ app.post("/post/redigerBruker", (req, res) => {
         const updateStatement3 = db.prepare("UPDATE kompani SET medlemmer = ? WHERE kompani_id = ?");
         updateStatement3.run(kompaniMedlemmer2.medlemmer - 1, user.kompani);
       }
+    } else {
+      const updateStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
+      updateStatement.run(undefined, id);
+      if(user.kompani != undefined) {
+        const selectStatement2 = db.prepare("SELECT * FROM kompani WHERE kompani_id = ?");
+        const kompaniMedlemmer2 = selectStatement2.get(user.kompani);
+        const updateStatement3 = db.prepare("UPDATE kompani SET medlemmer = ? WHERE kompani_id = ?");
+        updateStatement3.run(kompaniMedlemmer2.medlemmer - 1, user.kompani);
+      }
     }
   }
 
