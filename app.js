@@ -277,6 +277,12 @@ app.post("/post/sparkMedlem/:id", (req, res) => {
   if(user.id == id) {
     return res.send("Du kan ikke slette deg selv!");
   }
+  const getUserStatement = db.prepare("SELECT * FROM users WHERE id = ?");
+  const getUser = getUserStatement.get(id);
+  const getKompaniStatement = db.prepare("SELECT * FROM kompani WHERE kompani_id = ?");
+  const getKompani = getKompaniStatement.get(getUser.kompani);
+  const updateMembersStatement = db.prepare("UPDATE kompani SET medlemmer = ? WHERE kompani_id = ?");
+  updateMembersStatement.run(getKompani.medlemmer - 1, getKompani.kompani_id);
   const deleteStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
   deleteStatement.run(undefined, id);
   res.redirect("/leder/brukere");
