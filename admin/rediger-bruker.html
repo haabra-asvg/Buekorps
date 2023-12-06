@@ -114,7 +114,7 @@
       });
   }
 
-  function switchCase (user) {
+  function switchCase(user) {
     fetch("/json/bataljoner")
     .then((res) => res.json())
     .then((data) => {
@@ -143,12 +143,15 @@
         switch (user.rolle) {
           case "admin":
             switchCase(user);
+            fetchKompani();
             break;
           case "leder":
             switchCase(user);
+            fetchKompani();
             break;
           case "medlem":
             switchCase(user);
+            fetchKompani();
             break;
           case "forelder":
             document.getElementById("bataljon").style.display = "none";
@@ -156,6 +159,5 @@
             break;
         }
       });
-    fetchKompani();
   });
 </script>
