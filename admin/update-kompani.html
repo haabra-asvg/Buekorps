@@ -54,11 +54,12 @@
       .then((res) => res.json())
       .then((data) => {
         data.forEach((kompani) => {
-          fetch("/json/users")
+          if(kompani.kompani_id == kompaniId) {
+            fetch("/json/users")
             .then((res) => res.json())
-            .then((data) => {
+            .then((dataUsers) => {
               const getBataljon = document.getElementById("bataljon");
-              data.forEach((user) => {
+              dataUsers.forEach((user) => {
                 if(user.kompani == kompaniId) {
                   const option = document.createElement("option");
                   option.value = user.id;
@@ -70,6 +71,7 @@
                 }
               });
             });
+          }
         });
       });
   }
