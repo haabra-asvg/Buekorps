@@ -278,6 +278,45 @@ app.get("/medlem/profil", (req, res) => {
   res.render('profil', { user: getUser });
 });
 
+app.get("/medlem/redigerProfil", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const getUser = selectStatement.get(getCookie);
+  res.render('redigerProfil', { user: getUser });
+});
+
+app.post("/post/medlem/redigerBruker", (req, res) => {
+  const { name, epost, tlf } = req.body;
+  const getCookie = req.cookies.user;
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+
+  if(name != user.name) {
+    const getStatement = db.prepare("SELECT * FROM users WHERE name = ?");
+    const checkName = getStatement.get(name);
+    if(checkName) return res.send("Dette navnet er allerede i bruk!");
+    const updateStatement = db.prepare("UPDATE users SET name = ? WHERE email = ?");
+    updateStatement.run(name, getCookie);
+  }
+
+  if(epost != user.email) {
+    const getStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+    const checkEmail = getStatement.get(epost);
+    if(checkEmail) return res.send("Denne eposten er allerede i bruk!");
+    const updateStatement = db.prepare("UPDATE users SET email = ? WHERE email = ?");
+    updateStatement.run(epost, getCookie);
+  }
+
+  if(tlf != user.tlf) {
+    const updateStatement = db.prepare("UPDATE users SET tlf = ? WHERE email = ?");
+    updateStatement.run(tlf, getCookie);
+  }
+
+  res.redirect("/medlem/profil");
+
+})
+
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;
   const insertStatement = db.prepare(

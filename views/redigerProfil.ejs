@@ -28,16 +28,16 @@
 </script>
 
 <body>
-  <div class="container mx-auto w-25 mt-2">
+  <form action="/post/medlem/redigerBruker" method="POST"><div class="container mx-auto w-25 mt-2">
     <div class="login-container mt-5 border rounded p-3 bg-body-tertiary">
       <label class="form-label">ID</label>
       <input type="email" name="email" class="form-control readonly" id="email" placeholder="<%= user.id %>" readonly> <br>
       <label for="" class="form-label">Navn</label>
-      <input type="password" name="password" class="form-control readonly" id="password" placeholder="<%= user.name %>" readonly> <br>
+      <input type="text" name="name" class="form-control" id="name" placeholder="Navn" value="<%= user.name %>"> <br>
       <label for="" class="form-label">E-post</label>
-      <input type="text" name="epost" class="form-control readonly" id="epost" placeholder="<%= user.email %>" readonly> <br>
+      <input type="text" name="epost" class="form-control" id="epost" placeholder="E-post" value="<%= user.email %>"> <br>
       <label for="" class="form-label">Tlf</label>
-      <input type="text" name="tlf" class="form-control readonly" id="tlf" placeholder="<%= user.tlf %>" readonly> <br>
+      <input type="text" name="tlf" class="form-control" id="tlf" placeholder="Telefonnummer" value="<%= user.tlf %>"> <br>
       <label for="" class="form-label">Rolle</label>
       <input type="text" name="rolle" class="form-control readonly" id="rolle" placeholder="<%= user.rolle %>" readonly> <br>
       <label for="" class="form-label">Bataljon</label>
@@ -45,11 +45,10 @@
       <label for="" class="form-label">Kompani</label>
       <input type="text" name="kompani" class="form-control readonly" id="kompani" placeholder="<%= user.kompani %>" readonly> <br>
       <div class="btn-container d-flex justify-content-center">
-        <a href="/medlem/redigerProfil"><button type="submit" class="btn btn-warning" id="submit">Rediger</button></a>
+        <input type="submit" class="btn btn-primary" value="Send inn">
       </div>
     </div>
-  </div>
-
+  </div></form>
 </body>
 </html>
 
