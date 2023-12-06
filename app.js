@@ -333,7 +333,16 @@ app.post("/post/medlem/redigerBruker", (req, res) => {
 
   res.redirect("/medlem/profil");
 
-})
+});
+
+app.get("/forelder", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const getUser = selectStatement.get(getCookie);
+  if(getUser.rolle != "forelder") return res.send("Du har ikke tilgang til denne siden!")
+  res.sendFile(__dirname + "/forelder/index.html");
+});
 
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;

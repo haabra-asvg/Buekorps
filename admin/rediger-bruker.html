@@ -73,6 +73,7 @@
         <option value="admin">Administrator</option>
         <option value="leder">Leder</option>
         <option value="medlem">Medlem</option>
+        <option value="forelder">Forelder</option>
         </script>
       </select>
       <select class="mt-4 form-select form-select-sm" name="bataljon" id="bataljon">
@@ -124,17 +125,22 @@
         document.getElementById("email").value = user.email;
         document.getElementById("rolle").value = user.rolle;
         document.getElementById("tlf").value = user.tlf;
-        fetch("/json/bataljoner")
-          .then((res) => res.json())
-          .then((data) => {
-            data.forEach((bataljon) => {
-              const option = document.createElement("option");
-              option.value = bataljon.bataljon_id;
-              option.innerText = bataljon.name;
-              if (bataljon.bataljon_id === user.bataljon) option.selected = true;
-              document.getElementById("bataljon").appendChild(option);
+        if (!user.rolle === "forelder") {
+          fetch("/json/bataljoner")
+            .then((res) => res.json())
+            .then((data) => {
+              data.forEach((bataljon) => {
+                const option = document.createElement("option");
+                option.value = bataljon.bataljon_id;
+                option.innerText = bataljon.name;
+                if (bataljon.bataljon_id === user.bataljon) option.selected = true;
+                document.getElementById("bataljon").appendChild(option);
+              });
             });
-          });
+        } else {
+          document.getElementById("bataljon").style.display = "none";
+          document.getElementById("kompani").style.display = "none";
+        }
       });
   });
   fetchKompani();

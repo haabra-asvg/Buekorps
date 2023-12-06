@@ -9,7 +9,7 @@
 </head>
 
 <style>
-  #tableLedere, #tableAdministratorer, #tableMedlemmer {
+  #tableLedere, #tableAdministratorer, #tableMedlemmer, #tableForeldre {
     width: 90% !important;
     margin: 0 auto !important;
   }
@@ -25,105 +25,30 @@
       const ledere = data.filter(user => user.rolle === "leder");
       const admins = data.filter(user => user.rolle === "admin");
       const medlemmer = data.filter(user => user.rolle === "medlem");
+      const foreldre = data.filter(user => user.rolle === "forelder");
 
       ledere.sort((a, b) => a.id - b.id);
       admins.sort((a, b) => a.id - b.id);
       medlemmer.sort((a, b) => a.id - b.id);
+      foreldre.sort((a, b) => a.id - b.id);
 
       ledere.forEach(user => {
-        const tr = document.createElement("tr");
-        const id = document.createElement("td");
-        const name = document.createElement("td");
-        const email = document.createElement("td");
-        const tlf = document.createElement("td");
-        const rolle = document.createElement("td");
-        const kompani = document.createElement("td");
-        const bataljon = document.createElement("td");
-        const actions = document.createElement("td");
-        const editUser = document.createElement("button");
-        const editUserA = document.createElement("a");
-        const deleteForm = document.createElement("form");
-        const deleteUser = document.createElement("button");
-        id.setAttribute("class", "id");
-        id.innerText = user.id;
-        name.innerText = user.name;
-        email.innerText = user.email;
-        tlf.innerText = user.tlf;
-        rolle.innerText = user.rolle;
-        kompani.innerText = user.kompani;
-        bataljon.innerText = user.bataljon;
-        editUserA.href = `/admin/rediger-bruker/${user.id}`
-        editUser.innerText = "Rediger";
-        editUser.setAttribute("class", "btn btn-warning");
-        editUser.style.marginRight = "2.5%";
-        deleteForm.setAttribute("class", "form-class");
-        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
-        deleteForm.setAttribute("method", "POST");
-        deleteUser.innerText = "Slett";
-        deleteUser.setAttribute("class", "btn btn-danger");
-        tr.appendChild(id);
-        tr.appendChild(name);
-        tr.appendChild(email);
-        tr.appendChild(tlf);
-        tr.appendChild(rolle);
-        tr.appendChild(kompani);
-        tr.appendChild(bataljon);
-        editUserA.appendChild(editUser);
-        actions.appendChild(editUserA);
-        deleteForm.appendChild(deleteUser);
-        actions.appendChild(deleteForm);
-        tr.appendChild(actions);
-        document.getElementById("lederBody").appendChild(tr);
+        test(user, "lederBody")
       });
 
       admins.forEach(user => {
-        const tr = document.createElement("tr");
-        const id = document.createElement("td");
-        const name = document.createElement("td");
-        const email = document.createElement("td");
-        const tlf = document.createElement("td");
-        const rolle = document.createElement("td");
-        const kompani = document.createElement("td");
-        const bataljon = document.createElement("td");
-        const actions = document.createElement("td");
-        const editUser = document.createElement("button");
-        const editUserA = document.createElement("a");
-        const deleteForm = document.createElement("form");
-        const deleteUser = document.createElement("button");
-        id.setAttribute("class", "id");
-        id.innerText = user.id;
-        name.innerText = user.name;
-        email.innerText = user.email;
-        tlf.innerText = user.tlf;
-        rolle.innerText = user.rolle;
-        kompani.innerText = user.kompani;
-        bataljon.innerText = user.bataljon;
-        editUserA.href = `/admin/rediger-bruker/${user.id}`
-        editUser.innerText = "Rediger";
-        editUser.setAttribute("class", "btn btn-warning");
-        editUser.style.marginRight = "2.5%";
-        deleteForm.setAttribute("class", "form-class");
-        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
-        deleteForm.setAttribute("method", "POST");
-        deleteUser.innerText = "Slett";
-        deleteUser.setAttribute("class", "btn btn-danger");
-        tr.appendChild(id);
-        tr.appendChild(name);
-        tr.appendChild(email);
-        tr.appendChild(tlf);
-        tr.appendChild(rolle);
-        tr.appendChild(kompani);
-        tr.appendChild(bataljon);
-        editUserA.appendChild(editUser);
-        actions.appendChild(editUserA);
-        deleteForm.appendChild(deleteUser);
-        actions.appendChild(deleteForm);
-        tr.appendChild(actions);
-        document.getElementById("administratorBody").appendChild(tr);
+        test(user, "administratorBody")
       })
 
       medlemmer.forEach(user => {
-        const tr = document.createElement("tr");
+        test(user, "medlemBody")
+      });
+      foreldre.forEach(user => {
+        test(user, "foreldreBody");
+      })
+    })
+    function test(bruker, tabell) {
+      const tr = document.createElement("tr");
         const id = document.createElement("td");
         const name = document.createElement("td");
         const email = document.createElement("td");
@@ -137,19 +62,19 @@
         const deleteForm = document.createElement("form");
         const deleteUser = document.createElement("button");
         id.setAttribute("class", "id");
-        id.innerText = user.id;
-        name.innerText = user.name;
-        email.innerText = user.email;
-        tlf.innerText = user.tlf;
-        rolle.innerText = user.rolle;
-        kompani.innerText = user.kompani;
-        bataljon.innerText = user.bataljon;
-        editUserA.href = `/admin/rediger-bruker/${user.id}`
+        id.innerText = bruker.id;
+        name.innerText = bruker.name;
+        email.innerText = bruker.email;
+        tlf.innerText = bruker.tlf;
+        rolle.innerText = bruker.rolle;
+        kompani.innerText = bruker.kompani;
+        bataljon.innerText = bruker.bataljon;
+        editUserA.href = `/admin/rediger-bruker/${bruker.id}`
         editUser.innerText = "Rediger";
         editUser.setAttribute("class", "btn btn-warning");
         editUser.style.marginRight = "2.5%";
         deleteForm.setAttribute("class", "form-class");
-        deleteForm.setAttribute("action", `/post/slettBruker/${user.id}`);
+        deleteForm.setAttribute("action", `/post/slettBruker/${bruker.id}`);
         deleteForm.setAttribute("method", "POST");
         deleteUser.innerText = "Slett";
         deleteUser.setAttribute("class", "btn btn-danger");
@@ -165,9 +90,8 @@
         deleteForm.appendChild(deleteUser);
         actions.appendChild(deleteForm);
         tr.appendChild(actions);
-        document.getElementById("medlemBody").appendChild(tr);
-      })
-    })
+        document.getElementById(tabell).appendChild(tr);
+    }
 </script>
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -249,6 +173,24 @@
     </thead>
     <tbody id="medlemBody">
       
+    </tbody>
+  </table>
+  <h3 class="my-5"><center>Foreldre</center></h3>
+  <table class="table table-striped" id="tableForeldre">
+    <thead id="thead">
+      <tr>
+        <th>#</th>
+        <th>Navn</th>
+        <th>E-post</th>
+        <th>Tlf</th>
+        <th>Rolle</th>
+        <th>Kompani</th>
+        <th>Bataljon</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="foreldreBody">
+
     </tbody>
   </table>
 </body>

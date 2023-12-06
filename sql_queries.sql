@@ -22,3 +22,9 @@ CREATE TABLE IF NOT EXISTS kompani (
   leder TEXT,
   medlemmer NUMBER NOT NULL
 )
+
+CREATE TABLE IF NOT EXISTS barn_foreldre (
+  id INTEGER PRIMARY KEY NOT NULL,
+  barn_id TEXT NOT NULL,
+  forelder_id TEXT NOT NULL
+)
