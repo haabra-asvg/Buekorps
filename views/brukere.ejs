@@ -44,6 +44,8 @@
           rolle.innerText = bruker.rolle;
           kompani.innerText = bruker.kompani;
           bataljon.innerText = bruker.bataljon;
+          sparkForm.method = "POST";
+          sparkForm.action = "/post/sparkMedlem/" + bruker.id;
           spark.innerText = "Spark";
           spark.setAttribute("class", "btn btn-danger");
           tr.appendChild(id);

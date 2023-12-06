@@ -270,6 +270,18 @@ app.get("/leder/brukere", (req, res) => {
   res.render('brukere', { user: getUser });
 });
 
+app.post("/post/sparkMedlem/:id", (req, res) => {
+  const id = req.params.id;
+  const userEmail = req.cookies.user;
+  const user = db.prepare("SELECT * FROM users WHERE email = ?").get(userEmail);
+  if(user.id == id) {
+    return res.send("Du kan ikke slette deg selv!");
+  }
+  const deleteStatement = db.prepare("UPDATE users SET kompani = ? WHERE id = ?");
+  deleteStatement.run(undefined, id);
+  res.redirect("/leder/brukere");
+});
+
 app.get("/medlem/profil", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
