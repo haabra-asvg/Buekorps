@@ -113,6 +113,21 @@
         })
       });
   }
+
+  function switchCase (user) {
+    fetch("/json/bataljoner")
+    .then((res) => res.json())
+    .then((data) => {
+      data.forEach((bataljon) => {
+        const option = document.createElement("option");
+        option.value = bataljon.bataljon_id;
+        option.innerText = bataljon.name;
+        if (bataljon.bataljon_id === user.bataljon) option.selected = true;
+        document.getElementById("bataljon").appendChild(option);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("bataljon").addEventListener("change", fetchKompani);
     const userId = window.location.pathname.split("/").pop();
@@ -125,23 +140,22 @@
         document.getElementById("email").value = user.email;
         document.getElementById("rolle").value = user.rolle;
         document.getElementById("tlf").value = user.tlf;
-        if (!user.rolle === "forelder") {
-          fetch("/json/bataljoner")
-            .then((res) => res.json())
-            .then((data) => {
-              data.forEach((bataljon) => {
-                const option = document.createElement("option");
-                option.value = bataljon.bataljon_id;
-                option.innerText = bataljon.name;
-                if (bataljon.bataljon_id === user.bataljon) option.selected = true;
-                document.getElementById("bataljon").appendChild(option);
-              });
-            });
-        } else {
-          document.getElementById("bataljon").style.display = "none";
-          document.getElementById("kompani").style.display = "none";
+        switch (user.rolle) {
+          case "admin":
+            switchCase(user);
+            break;
+          case "leder":
+            switchCase(user);
+            break;
+          case "medlem":
+            switchCase(user);
+            break;
+          case "forelder":
+            document.getElementById("bataljon").style.display = "none";
+            document.getElementById("kompani").style.display = "none";
+            break;
         }
       });
+    fetchKompani();
   });
-  fetchKompani();
 </script>
