@@ -24,6 +24,7 @@
     .then(res => res.json())
     .then(data => {
       data.forEach(bruker => {
+        if(getKompani == undefined) return window.location.href = "/";
         if(bruker.kompani == getKompani) {
           const tr = document.createElement("tr");
           const id = document.createElement("td");
@@ -57,7 +58,6 @@
           tr.appendChild(actions);
           document.getElementById("medlemmerBody").appendChild(tr);
         }
-        if(!bruker.kompani) return res.send("Du er ikke medlem i et kompani!");
       })
     });
 </script>
