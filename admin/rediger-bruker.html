@@ -28,18 +28,16 @@
       });
   }
   fetchUser();
-</script>
 
-<script defer>
   var options = [];
   fetch("/json/users")
     .then(res => res.json())
     .then(data => {
       data.forEach(user => {
         options.push({ value: user.id, text: user.name });
+        document.getElementById("velg-barn").innerHTML += `<option value="${user.id}">${user.name}</option>`;
       });
     });
-  console.log(options)
 
   function search() {
     var selectElement = document.querySelector('#test');
@@ -128,19 +126,14 @@
         </tbody>
       </table>
       <div id="nytt-barn">
-        <select name="test" id="test" class="form-select w-50 mx-auto">
+        <select name="test" id="velg-barn" class="form-select w-50 mx-auto">
           <option value="velg" selected>Velg et barn...</option>
-          <script>
-            options.forEach(option => {
-              document.write(`<option value="${option.value}">${option.text}</option>`);
-            });
-          </script>
         </select>
         <div class="field text-center">
           <label class="label">Name</label>
           <div class="control">
             <input class="input" type="text" placeholder="Text input" id="input">
-            <button class="btn btn-primary" id="search" onclick="search()">Search</button>
+            <button class="btn btn-primary" type="button" id="search" onclick="search()">Search</button>
           </div>
         </div>
       </div>
