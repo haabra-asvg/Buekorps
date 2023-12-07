@@ -39,8 +39,13 @@
       });
     });
 
+  document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("search").onclick = search;
+  });
+
   function search() {
-    var selectElement = document.querySelector('#test');
+    var selectElement = document.querySelector('#velg-barn');
+    console.log(selectElement)
     var inputValue = document.getElementById("input").value.toLowerCase();
     var matches = options.filter(option => option.text.toLowerCase().includes(inputValue));
 
@@ -133,7 +138,7 @@
           <label class="label">Name</label>
           <div class="control">
             <input class="input" type="text" placeholder="Text input" id="input">
-            <button class="btn btn-primary" type="button" id="search" onclick="search()">Search</button>
+            <button class="btn btn-primary" type="button" id="search">Search</button>
           </div>
         </div>
       </div>
