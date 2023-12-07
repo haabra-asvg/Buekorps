@@ -521,6 +521,10 @@ function verifyUser(user, password, res) {
   }
 }
 
+app.get("/admin/test", (req, res) => {
+  res.sendFile(__dirname + "/admin/test.html");
+})
+
 app.listen("3000", () => {
   if (showLog)
     console.log(
