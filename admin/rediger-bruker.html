@@ -30,6 +30,38 @@
   fetchUser();
 </script>
 
+<script defer>
+  var options = [];
+  fetch("/json/users")
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(user => {
+        options.push({ value: user.id, text: user.name });
+      });
+    });
+  console.log(options)
+
+  function search() {
+    var selectElement = document.querySelector('#test');
+    var inputValue = document.getElementById("input").value.toLowerCase();
+    var matches = options.filter(option => option.text.toLowerCase().includes(inputValue));
+
+    if(matches.length > 0) {
+      while (selectElement.firstChild) {
+        selectElement.removeChild(selectElement.firstChild);
+      }
+      matches.forEach(option => {
+        var newOption = document.createElement('option');
+        newOption.value = option.value;
+        newOption.text = option.text;
+        selectElement.appendChild(newOption);
+      });
+    } else {
+      alert("No matches found!");
+    }
+  }
+</script>
+
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
@@ -82,6 +114,36 @@
       <select name="kompani" id="kompani" class="mt-4 form-select form-select-sm">
         <option selected value="velg">Velg ett kompani...</option>
       </select>
+      <table class="table table-striped mt-4" id="barn">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Navn</th>
+            <th>Epost</th>
+            <th>Handlinger</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+
+        </tbody>
+      </table>
+      <div id="nytt-barn">
+        <select name="test" id="test" class="form-select w-50 mx-auto">
+          <option value="velg" selected>Velg et barn...</option>
+          <script>
+            options.forEach(option => {
+              document.write(`<option value="${option.value}">${option.text}</option>`);
+            });
+          </script>
+        </select>
+        <div class="field text-center">
+          <label class="label">Name</label>
+          <div class="control">
+            <input class="input" type="text" placeholder="Text input" id="input">
+            <button class="btn btn-primary" id="search" onclick="search()">Search</button>
+          </div>
+        </div>
+      </div>
       <div class="btn-container d-flex justify-content-center">
         <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
       </div>
@@ -144,18 +206,62 @@
           case "admin":
             switchCase(user);
             fetchKompani();
+            document.getElementById("barn").style.display = "none";
+            document.getElementById("nytt-barn").style.display = "none";
             break;
           case "leder":
             switchCase(user);
             fetchKompani();
+            document.getElementById("barn").style.display = "none";
+            document.getElementById("nytt-barn").style.display = "none";
             break;
           case "medlem":
             switchCase(user);
             fetchKompani();
+            document.getElementById("barn").style.display = "none";
+            document.getElementById("nytt-barn").style.display = "none";
             break;
           case "forelder":
             document.getElementById("bataljon").style.display = "none";
             document.getElementById("kompani").style.display = "none";
+            fetch("/json/barn_foreldre")
+              .then(res => res.json())
+              .then(dataBarnForeldre => {
+                dataBarnForeldre.forEach(barnForeldre => {
+                  if(barnForeldre.forelder_id === user.id) {
+                    fetch("/json/users")
+                      .then(res => res.json())
+                      .then(dataUsers => {
+                        dataUsers.forEach(user => {
+                          if(user.id == barnForeldre.barn_id) {
+                            const tr = document.createElement("tr");
+                            const id = document.createElement("td");
+                            const name = document.createElement("td");
+                            const email = document.createElement("td");
+                            const actions = document.createElement("td");
+                            const deleteForm = document.createElement("form");
+                            const deleteUser = document.createElement("button");
+                            id.innerText = user.id;
+                            name.innerText = user.name;
+                            email.innerText = user.email;
+                            deleteForm.setAttribute("class", "form-class");
+                            deleteForm.setAttribute("action", `/post/slettBarn/${user.id}`);
+                            deleteForm.setAttribute("method", "POST");
+                            deleteUser.innerText = "Slett";
+                            deleteUser.setAttribute("class", "btn btn-danger");
+                            tr.appendChild(id);
+                            tr.appendChild(name);
+                            tr.appendChild(email);
+                            deleteForm.appendChild(deleteUser);
+                            actions.appendChild(deleteForm);
+                            tr.appendChild(actions);
+                            document.getElementById("tbody").appendChild(tr);
+                          }
+                        })
+                      })
+                  }
+                })
+              })
             break;
         }
       });

@@ -25,6 +25,6 @@ CREATE TABLE IF NOT EXISTS kompani (
 
 CREATE TABLE IF NOT EXISTS barn_foreldre (
   id INTEGER PRIMARY KEY NOT NULL,
-  barn_id TEXT NOT NULL,
-  forelder_id TEXT NOT NULL
+  barn_id NUMBER NOT NULL,
+  forelder_id NUMBER NOT NULL
 )

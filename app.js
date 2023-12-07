@@ -51,6 +51,12 @@ app.get("/json/kompanier", (req, res) => {
   res.send(users);
 });
 
+app.get("/json/barn_foreldre", (req, res) => {
+  const selectStatement = db.prepare("SELECT * FROM barn_foreldre");
+  const users = selectStatement.all();
+  res.send(users);
+});
+
 app.get("/admin", (req, res) => {
   const getCookie = req.cookies.user;
   if(!getCookie) return res.send("Du må logge inn for å se denne siden!");
@@ -522,8 +528,22 @@ function verifyUser(user, password, res) {
 }
 
 app.get("/admin/test", (req, res) => {
-  res.sendFile(__dirname + "/admin/test.html");
+  const getUsers = db.prepare("SELECT * FROM users");
+  const getUser = getUsers.all();
+  res.render('test', { users: getUser });
 })
+
+app.get("/admin/inject", (req, res) => {
+  res.sendFile(__dirname + "/admin/sqlinject.html");
+});
+
+app.post("/post/inject", (req, res) => {
+  const { inject } = req.body;
+  const insert = db.exec(inject);
+  if (insert) {
+    res.redirect("/admin/inject");
+  }
+});
 
 app.listen("3000", () => {
   if (showLog)
