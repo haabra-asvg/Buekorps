@@ -45,7 +45,6 @@
 
   function search() {
     var selectElement = document.querySelector('#velg-barn');
-    console.log(selectElement)
     var inputValue = document.getElementById("input").value.toLowerCase();
     var matches = options.filter(option => option.text.toLowerCase().includes(inputValue));
 
@@ -53,17 +52,25 @@
       while (selectElement.firstChild) {
         selectElement.removeChild(selectElement.firstChild);
       }
+
       matches.forEach(option => {
         var newOption = document.createElement('option');
         newOption.value = option.value;
         newOption.text = option.text;
         selectElement.appendChild(newOption);
       });
+      
     } else {
       alert("No matches found!");
     }
   }
 </script>
+
+<style>
+  .width-40 {
+    width: 40% !important;
+  }
+</style>
 
 <body>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -117,6 +124,10 @@
       <select name="kompani" id="kompani" class="mt-4 form-select form-select-sm">
         <option selected value="velg">Velg ett kompani...</option>
       </select>
+      <div class="btn-container d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
+      </div>
+    </form>
       <table class="table table-striped mt-4" id="barn">
         <thead>
           <tr>
@@ -131,9 +142,15 @@
         </tbody>
       </table>
       <div id="nytt-barn">
-        <select name="test" id="velg-barn" class="form-select w-50 mx-auto">
-          <option value="velg" selected>Velg et barn...</option>
-        </select>
+        <form action="/post/leggtilBarn" method="POST">
+          <input type="hidden" name="forelder_id" id="forelder_id">
+          <div class="d-flex mx-auto">
+            <select name="velg_barn" id="velg-barn" class="form-select width-40 mx-auto me-0">
+              <option value="velg" selected>Velg et barn...</option>
+            </select>
+            <button class="btn btn-primary me-auto" id="submit">Legg til barn</button>
+          </div>
+        </form>
         <div class="field text-center">
           <label class="label">Name</label>
           <div class="control">
@@ -142,11 +159,7 @@
           </div>
         </div>
       </div>
-      <div class="btn-container d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary mt-3" id="submit">Submit</button>
-      </div>
     </div>
-  </form>
 </body>
 
 </html>
@@ -226,6 +239,7 @@
               .then(res => res.json())
               .then(dataBarnForeldre => {
                 dataBarnForeldre.forEach(barnForeldre => {
+                  document.getElementById("forelder_id").value = user.id;
                   if(barnForeldre.forelder_id === user.id) {
                     fetch("/json/users")
                       .then(res => res.json())

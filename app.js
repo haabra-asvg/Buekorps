@@ -31,6 +31,11 @@ app.get('/admin/rediger-bruker/:id', (req, res) => {
   res.sendFile(__dirname + "/admin/rediger-bruker.html");
 });
 
+app.post("/post/leggtilBarn", (req, res) => {
+  const { velg_barn, forelder_id } = req.body;
+  console.log(velg_barn + forelder_id);
+});
+
 app.get("/json/users", (req, res) => {
   const selectStatement = db.prepare(
     "SELECT id, name, email, rolle, tlf, bataljon, kompani FROM users"
