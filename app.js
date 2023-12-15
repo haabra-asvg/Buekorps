@@ -363,6 +363,19 @@ app.get("/forelder", (req, res) => {
   res.sendFile(__dirname + "/forelder/index.html");
 });
 
+app.get("/forelder/mine-barn", (req, res) => {
+  const getCookie = req.cookies.user;
+  if(!getCookie) return res.send("Du må logge inn for å se denne siden!")
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const getUser = selectStatement.get(getCookie);
+  if(getUser.rolle != "forelder") return res.send("Du har ikke tilgang til denne siden!");
+  const selectStatement2 = db.prepare("SELECT * FROM barn_foreldre WHERE forelder_id = ?");
+  const getBarn = selectStatement2.all(getUser.id);
+  const selectStatement3 = db.prepare("SELECT * FROM users");
+  const getUsers = selectStatement3.all();
+  res.render('mineBarn', { barn: getBarn, user: getUsers });
+});
+
 app.post("/post/registrer", (req, res) => {
   const { name, email, password } = req.body;
   const insertStatement = db.prepare(

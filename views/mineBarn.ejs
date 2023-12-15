@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <title>Document</title>
+</head>
+
+<script defer>
+  var getBarn = <%- JSON.stringify(barn); %>
+  var users = <%- JSON.stringify(user); %>
+  document.addEventListener("DOMContentLoaded", function() {
+    getBarn.forEach(barn => {
+      users.forEach(user => {
+        if(user.id == barn.barn_id) {
+          insertBarnIntoTable(user, "tbody");
+        }
+      })
+    });
+  });
+
+  function insertBarnIntoTable(user, tbody) {
+    const tr = document.createElement("tr");
+    const id = document.createElement("td");
+    const navn = document.createElement("td");
+    const epost = document.createElement("td");
+    const tlf = document.createElement("td");
+    const rolle = document.createElement("td");
+    const kompani = document.createElement("td");
+    const bataljon = document.createElement("td");
+    id.innerText = user.id;
+    navn.innerText = user.name;
+    epost.innerText = user.email;
+    tlf.innerText = user.tlf;
+    rolle.innerText = user.rolle;
+    kompani.innerText = user.kompani;
+    bataljon.innerText = user.bataljon;
+    tr.appendChild(id);
+    tr.appendChild(navn);
+    tr.appendChild(epost);
+    tr.appendChild(tlf);
+    tr.appendChild(rolle);
+    tr.appendChild(kompani);
+    tr.appendChild(bataljon);
+    document.getElementById(tbody).appendChild(tr);
+  }
+</script>
+
+<body>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Navn</th>
+        <th>Epost</th>
+        <th>Tlf</th>
+        <th>Rolle</th>
+        <th>Kompani</th>
+        <th>Bataljon</th>
+      </tr>
+    </thead>
+    <tbody id="tbody">  
+    </tbody>
+  </table>
+</body>
+</html>
