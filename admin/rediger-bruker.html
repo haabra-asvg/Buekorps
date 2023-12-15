@@ -215,17 +215,7 @@
         document.getElementById("tlf").value = user.tlf;
         switch (user.rolle) {
           case "admin":
-            switchCase(user);
-            fetchKompani();
-            document.getElementById("barn").style.display = "none";
-            document.getElementById("nytt-barn").style.display = "none";
-            break;
           case "leder":
-            switchCase(user);
-            fetchKompani();
-            document.getElementById("barn").style.display = "none";
-            document.getElementById("nytt-barn").style.display = "none";
-            break;
           case "medlem":
             switchCase(user);
             fetchKompani();
