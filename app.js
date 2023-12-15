@@ -34,6 +34,14 @@ app.get('/admin/rediger-bruker/:id', (req, res) => {
 app.post("/post/leggtilBarn", (req, res) => {
   const { velg_barn, forelder_id } = req.body;
   console.log(velg_barn + forelder_id);
+  const fetchStatement = db.prepare("SELECT * FROM barn_foreldre WHERE barn_id = ? AND forelder_id = ?");
+  const fetch = fetchStatement.get(velg_barn, forelder_id);
+  if(fetch) return res.send("Dette barnet er allerede lagt til!");
+  const insertStatement = db.prepare("INSERT INTO barn_foreldre (barn_id, forelder_id) VALUES (?, ?)");
+  const insert = insertStatement.run(velg_barn, forelder_id);
+  if(insert) {
+    res.redirect("/admin/brukere");
+  }
 });
 
 app.get("/json/users", (req, res) => {
