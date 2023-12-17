@@ -16,6 +16,10 @@ app.get("/", (req, res) => {
 });
 
 app.get("/registrer", (req, res) => {
+  const getCookie = req.cookies.user;
+  const selectStatement = db.prepare("SELECT * FROM users WHERE email = ?");
+  const user = selectStatement.get(getCookie);
+  if(user.rolle != "admin") return res.send("Du har ikke tilgang til denne siden!");
   res.sendFile(__dirname + "/login/registrer.html");
 });
 
@@ -558,18 +562,6 @@ app.get("/admin/test", (req, res) => {
   const getUser = getUsers.all();
   res.render('test', { users: getUser });
 })
-
-app.get("/admin/inject", (req, res) => {
-  res.sendFile(__dirname + "/admin/sqlinject.html");
-});
-
-app.post("/post/inject", (req, res) => {
-  const { inject } = req.body;
-  const insert = db.exec(inject);
-  if (insert) {
-    res.redirect("/admin/inject");
-  }
-});
 
 app.listen("3000", () => {
   if (showLog)
