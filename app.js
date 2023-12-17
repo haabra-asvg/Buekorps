@@ -385,7 +385,7 @@ app.post("/post/registrer", (req, res) => {
     "INSERT INTO users (name, email, rolle, password) VALUES (?, ?, ?, ?)"
   );
   const hashedPassword = bcrypt.hashSync(password, 10);
-  const insert = insertStatement.run(name, email, "admin", hashedPassword);
+  const insert = insertStatement.run(name, email, "medlem", hashedPassword);
   if (insert) {
     res.redirect("/");
   }
