@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const app = express();
-const showLog = true;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -489,8 +488,6 @@ app.post("/post/slettBruker/:id", (req, res) => {
 app.post("/post/delete", (req, res) => {
   const insert = db.exec("DELETE FROM users");
   if (req.cookies.user) {
-    if (showLog)
-      console.log("[" + colors.red.bold("LOGIN") + "] Database wiped!");
     res.clearCookie("user");
   }
   if (insert) {
@@ -512,8 +509,6 @@ app.post("/post/slettBruker/:id", (req, res) => {
 
 app.post('/post/checkCookie', (req, res) => {
   const user = req.cookies.user;
-  if (showLog)
-    console.log("[" + colors.green.bold("CHECK COOKIE") + "] " + user);
 });
 
 app.post("/post/dropUsers", (req, res) => {
@@ -551,21 +546,10 @@ function verifyUser(user, password, res) {
       maxAge: 30 * 24 * 60 * 60 * 1000,
       path: "/",
     });
-    if (showLog)
-      console.log("[" + colors.yellow.bold("LOGIN") + "] User logged in!");
     res.redirect("/");
   }
 }
 
-app.get("/admin/test", (req, res) => {
-  const getUsers = db.prepare("SELECT * FROM users");
-  const getUser = getUsers.all();
-  res.render('test', { users: getUser });
-})
-
 app.listen("3000", () => {
-  if (showLog)
-    console.log(
-      "[" + colors.brightRed.bold("PORT") + "] Listening on PORT 3000"
-    );
+  console.log("[" + colors.brightRed.bold("PORT") + "] Listening on PORT 3000");
 });
